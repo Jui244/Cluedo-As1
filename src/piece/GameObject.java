@@ -1,5 +1,6 @@
 package piece;
 
-public interface GameObject {
-
+public abstract class GameObject {
+	private String name;
+	
 }
