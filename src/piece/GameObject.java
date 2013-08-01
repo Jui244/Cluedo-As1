@@ -1,6 +1,12 @@
 package piece;
 
-public abstract class GameObject {
-	private String name;
-	
+import board.Room;
+/**
+ * yeah.. think you can figure this one out :P
+ * @author Potato
+ *
+ */
+public interface GameObject {
+	public Room getLocation();
+	public String getName();
 }

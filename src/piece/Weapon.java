@@ -1,11 +1,17 @@
 package piece;
 import board.Room;
-
-public class Weapon extends GameObject{
+/**
+ * Probably going to need to add a few more things in here as time
+ * go's on.
+ * @author Potato
+ *
+ */
+public class Weapon implements GameObject{
 	private String name;
 	private Room location;
 	
 	public Weapon(String name, Room location){
+		super();
 		this.name = name;
 		this.location = location;
 	}
