@@ -19,19 +19,47 @@ import game.Player;
  *
  */
 public class Board {
+	
 	private HashSet<Player> players;
 	private HashSet<Room> rooms;
 	private HashSet<Weapon> weapons;
+	private BoardTile[][] board;
+	private boolean hasKillerBeenFound;
 	
 
-	
 	public Board(HashSet<Player> players){
 		rooms = new HashSet<Room>(9);
-		rooms.add(new Room("Spa", players.size(), null));
 		
+		rooms.add(new Room("Kitchen", players.size(), null));
+		rooms.add(new Room("Dining Room", players.size(), null));
+		rooms.add(new Room("Lounge", players.size(), null));
+		rooms.add(new Room("Ball Room", players.size(), null));
+		rooms.add(new Room("Conservatory", players.size(), null));
+		rooms.add(new Room("Billiard Room", players.size(), null));
+		rooms.add(new Room("Library", players.size(), null));
+		rooms.add(new Room("Study", players.size(), null));
+		rooms.add(new Room("Hall", players.size(), null));
+		
+		//add rooms to deck
+		//add characters to deck
+		//shuffle deck
+		
+		
+		board = new BoardTile[25][25];
+		
+		hasKillerBeenFound = false;
 	}
 
 	public HashSet<Player> getPlayers() {
 		return players;
+	}
+	
+	public void gameLoop(){
+		int turnSize = players.size();
+		while(1 == 1){
+			for(int i = 1; i < turnSize + 1; i++){
+				
+			}
+		}
 	}
 }
