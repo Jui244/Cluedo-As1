@@ -4,13 +4,14 @@ import game.Player;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.HashSet;
 
 import board.Board;
 
 public class Main {
 	
 	private static int players;
-	private static Player[] p;
+	private static HashSet<Player> p;
 	
 	public static void main(String[] args) {
 		System.out.println("Welcome to Cluedo!");
@@ -20,10 +21,10 @@ public class Main {
 		
 		try {
 			players = Integer.parseInt(br.readLine());
-			p = new Player[players];
+			p = new HashSet<Player>(players);
 			for(int i = 1; i < players + 1; ++i){
 				System.out.println("Player: " + i + " please enter your name");
-				p[i] = new Player(br.readLine());
+				p.add(new Player(br.readLine()));
 			}
 		} catch (Exception e) {}
 		

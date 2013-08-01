@@ -6,15 +6,12 @@ public class Weapon extends GameObject{
 	private Room location;
 	
 	public Weapon(String name, Room location){
-		
+		this.name = name;
+		this.location = location;
 	}
 
 	public Room getLocation() {
 		return location;
-	}
-
-	public void setLocation(Room location) {
-		this.location = location;
 	}
 
 	public String getName() {
