@@ -86,32 +86,35 @@ public class Board {
 		BoardTile hE = hall.getEntrance();
 		
 		
-		BoardTile[][] board = {{ w, w, w, w, w, w, w, w, w,st, w, w, w,st, w, w, w, w, w, w, w, w, w},
-							   { k, k, k, k, k, k, w,hw,hw,hw,br,br,br,hw,hw,hw, w, c, c, c, c, c, c},
-							   { k, k, k, k, k, k,hw,hw,br,br,br,br,br,br,br,hw,hw, c, c, c, c, c, c},
-							   { k, k, k, k, k, k,hw,hw,br,br,br,br,br,br,br,hw,hw, c, c, c, c, c, c},
-							   { k, k, k, k, k,k,hw,hw,brE,br,br,br,br,br,brE,hw,hw,hw,c, c, c, c, w},
-							   { w, k, k, k,kE, k,hw,hw,br,br,br,br,br,br,br,hw,hw,hw,hw,hw,hw,hw,st},
-							   {hw,hw,hw,hw,hw,hw,hw,hw,br,brE,br,br,br,br,brE,br,hw,hw,hw,hw,hw,hw,hw,w},
-							   { w,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw, b, b, b, b, b, b},
-							   {dr,dr,dr,dr,dr,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,bE, b, b, b, b, b},
-							   {dr,dr,dr,dr,dr,dr,dr,dr,hw,hw, w, w, w, w,hw,hw,hw, b, b, b, b, b, b},
-							   {dr,dr,dr,dr,dr,dr,dr,dr,hw,hw, w, w, w, w,hw,hw,hw, b, b, b, b, b, b},
-							   {dr,dr,dr,dr,dr,dr,dr,drE,hw,hw,w, w, w, w,hw,hw,hw, b, b, b, b,bE, b},
-							   {dr,dr,dr,dr,dr,dr,dr,dr,hw,hw, w, w, w, w,hw,hw,hw,hw,hw,hw,hw,hw,hw},
-							   {dr,dr,dr,dr,dr,dr,dr,dr,hw,hw, w, w, w, w,hw,hw,hw,li,li,liE,li,li,w},
-							   {dr,dr,dr,dr,dr,dr,drE,dr,hw,hw,w, w, w, w,hw,hw,li,li,li,li,li,li,li},
-							   { w,hw,hw,hw,hw,hw,hw,hw,hw,hw, w, w, w, w,hw,hw,liE,li,li,li,li,li,li},
-							   {st,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,li,li,li,li,li,li,li},
-							   { w,hw,hw,hw,hw,hw,hw,hw,hw, h, h,hE,hE, h, h,hw,hw,hw,li,li,li,li,li},
-							   { l, l, l, l, l, l,lE,hw,hw, h, h, h, h, h, h,hw,hw,hw,hw,hw,hw,hw,st},
-							   { l, l, l, l, l, l, l,hw,hw, h, h, h, h, h,hE,hw,hw,hw,hw,hw,hw,hw, w},
-							   { l, l ,l, l, l, l, l,hw,hw, h, h, h, h, h, h,hw,hw,sE, s, s, s, s, s},
-							   { l, l ,l, l, l, l, l,hw,hw, h, h, h, h, h, h,hw,hw, s, s, s, s, s, s},
-							   { l, l ,l, l, l, l, l,hw,hw, h, h, h, h, h, h,hw,hw, s, s, s, s, s, s},
-							   { l, l, l, l, l, l, w,st, w, h, h, h, h, h, h, w,hw, w, s, s, s, s, s}};
-		
-		
+		BoardTile[][] board = {
+				{ w, w, w, w, w, w, w, w, w,st, w, w, w,st, w, w, w, w, w, w, w, w, w},
+				{ k, k, k, k, k, k, w,hw,hw,hw,br,br,br,hw,hw,hw, w, c, c, c, c, c, c},
+				{ k, k, k, k, k, k,hw,hw,br,br,br,br,br,br,br,hw,hw, c, c, c, c, c, c},
+				{ k, k, k, k, k, k,hw,hw,br,br,br,br,br,br,br,hw,hw, c, c, c, c, c, c},
+				{ k, k, k, k, k,k,hw,hw,brE,br,br,br,br,br,brE,hw,hw,hw,c, c, c, c, w},
+				{ w, k, k, k,kE, k,hw,hw,br,br,br,br,br,br,br,hw,hw,hw,hw,hw,hw,hw,st},
+				{hw,hw,hw,hw,hw,hw,hw,hw,br,brE,br,br,br,br,brE,br,hw,hw,hw,hw,hw,hw,hw,w},
+				{ w,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw, b, b, b, b, b, b},
+				{dr,dr,dr,dr,dr,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,bE, b, b, b, b, b},
+				{dr,dr,dr,dr,dr,dr,dr,dr,hw,hw, w, w, w, w,hw,hw,hw, b, b, b, b, b, b},
+				{dr,dr,dr,dr,dr,dr,dr,dr,hw,hw, w, w, w, w,hw,hw,hw, b, b, b, b, b, b},
+				{dr,dr,dr,dr,dr,dr,dr,drE,hw,hw,w, w, w, w,hw,hw,hw, b, b, b, b,bE, b},
+				{dr,dr,dr,dr,dr,dr,dr,dr,hw,hw, w, w, w, w,hw,hw,hw,hw,hw,hw,hw,hw,hw},
+				{dr,dr,dr,dr,dr,dr,dr,dr,hw,hw, w, w, w, w,hw,hw,hw,li,li,liE,li,li,w},
+				{dr,dr,dr,dr,dr,dr,drE,dr,hw,hw,w, w, w, w,hw,hw,li,li,li,li,li,li,li},
+				{ w,hw,hw,hw,hw,hw,hw,hw,hw,hw, w, w, w, w,hw,hw,liE,li,li,li,li,li,li},
+				{st,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,li,li,li,li,li,li,li},
+				{ w,hw,hw,hw,hw,hw,hw,hw,hw, h, h,hE,hE, h, h,hw,hw,hw,li,li,li,li,li},
+				{ l, l, l, l, l, l,lE,hw,hw, h, h, h, h, h, h,hw,hw,hw,hw,hw,hw,hw,st},
+				{ l, l, l, l, l, l, l,hw,hw, h, h, h, h, h,hE,hw,hw,hw,hw,hw,hw,hw, w},
+				{ l, l ,l, l, l, l, l,hw,hw, h, h, h, h, h, h,hw,hw,sE, s, s, s, s, s},
+				{ l, l ,l, l, l, l, l,hw,hw, h, h, h, h, h, h,hw,hw, s, s, s, s, s, s},
+				{ l, l ,l, l, l, l, l,hw,hw, h, h, h, h, h, h,hw,hw, s, s, s, s, s, s},
+				{ l, l, l, l, l, l, w,st, w, h, h, h, h, h, h, w,hw, w, s, s, s, s, s}
+				};
+		this.board = board;
+
+
 		//add rooms to deck
 		//add characters to deck
 		//shuffle deck

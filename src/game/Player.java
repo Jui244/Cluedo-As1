@@ -1,4 +1,9 @@
 package game;
+
+import java.util.ArrayList;
+
+import piece.GameObject;
+
 /**
  * A player on the board, nuff said.
  * Going to make a separate 'Character' class.
@@ -8,6 +13,8 @@ package game;
 public class Player {
 	private String name;
 	private int playerNumber;
+	private ArrayList<GameObject> hand;
+	
 	public Player(String name, int position) {
 		this.name = name;
 		playerNumber = position;

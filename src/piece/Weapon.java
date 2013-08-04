@@ -6,7 +6,7 @@ import board.Room;
  * @author Potato
  *
  */
-public class Weapon implements GameObject{
+public class Weapon extends GameObject{
 	private String name;
 	private Room location;
 	
