@@ -21,4 +21,7 @@ public class BoardTile {
 	public boolean isEntrance(){
 		return entrance;
 	}
+	public String print(){
+		return room.getName().substring(0,1);
+	}
 }
