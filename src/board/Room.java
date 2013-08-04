@@ -29,7 +29,7 @@ public class Room {
 		hasPassage = false;
 		this.name = name;
 	}
-	
+
 	public HashSet<Player> getPlayers(){
 		return players;
 	}
@@ -57,6 +57,12 @@ public class Room {
 	}
 	public Room getPassage(){
 		return hiddenPassage;
+	}
+	public BoardTile getTile(){
+		return new BoardTile(this, false);
+	}
+	public BoardTile getEntrance(){
+		return new BoardTile(this, true);
 	}
 	public String getName(){
 		return name;

@@ -10,10 +10,13 @@ public class BoardTile {
 	
 	public BoardTile(Room r, boolean entrance){
 		room = r;
-		this.entrance = entrance;		
+		this.entrance = entrance;
 	}
 	public Room getRoom(){
 		return room;
+	}
+	public void setEntrance(){
+		entrance = true;
 	}
 	public boolean isEntrance(){
 		return entrance;
