@@ -47,7 +47,7 @@ public class Board {
 		String st = "S"; //Start Point
 		
 		//Only place a player can move on is the 'hallway' or an 'entrance'
-
+/*
 		Room kitchen = new Room("Kitchen", players.size(), null);
 		Room diningRoom = new Room("Kitchen", players.size(), null);
 		Room lounge = new Room("Lounge", players.size(), null);
@@ -67,16 +67,16 @@ public class Board {
 		rooms.add(library);
 		rooms.add(study);
 		rooms.add(hall);
-
+*/
 		
 		String[][] board = {
 				{ w, w, w, w, w, w, w, w, w,st, w, w, w,st, w, w, w, w, w, w, w, w, w},
-				{ w, r, r, r, r, w, w,hw,hw,hw, w, r, w,hw,hw,hw, w, w, c, c, c, c, w},
-				{ w, r, r, r, r, w,hw,hw, w, w, w, r, w, w, w,hw,hw, w, c, c, c, c, w},
-				{ w, r, r, r, r, w,hw,hw, w, r, r, r, r, r, w,hw,hw, c, c, c, c, c, w},
+				{ w, r, r, r, r, w, w,hw,hw,hw, w, r, w,hw,hw,hw, w, w, r, r, r, r, w},
+				{ w, r, r, r, r, w,hw,hw, w, w, w, r, w, w, w,hw,hw, w, r, r, r, r, w},
+				{ w, r, r, r, r, w,hw,hw, w, r, r, r, r, r, w,hw,hw, c, r, r, r, r, w},
 				{ w, r, r, r, r, w,hw,hw,br, r, r, r, r, r,br,hw,hw,hw, w, w, w, w, w},
-				{ w, w, w, w, r, w,hw,hw, w, r, r, r, r, r, w,hw,hw,hw,hw,hw,hw,hw,st},
-				{ w,hw,hw,hw,hw,hw,hw,hw, w,br, w, w, w, w,br,hw,hw,hw,hw,hw,hw,hw, w},
+				{ w, w, w, w, k, w,hw,hw, w, r, r, r, r, r, w,hw,hw,hw,hw,hw,hw,hw,st},
+				{ w,hw,hw,hw,hw,hw,hw,hw, w,br, w, w, w,br, w,hw,hw,hw,hw,hw,hw,hw, w},
 				{ w,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw, w, w, w, w, w, w},
 				{ w, w, w, w, w,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw, b, r, r, r, r, w},
 				{ w, r, r, r, w, w, w, w,hw,hw, w, w, w, w,hw,hw,hw, w, r, r, r, r, w},
@@ -88,12 +88,12 @@ public class Board {
 				{ w,hw,hw,hw,hw,hw,hw,hw,hw,hw, w, w, w, w,hw,hw,li, r, r, r, r, r, w},
 				{st,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw, w, w, w, r, r, r, w},
 				{ w,hw,hw,hw,hw,hw,hw,hw,hw, w, w, h, h, w, w,hw,hw,hw, w, w, w, w, w},
-				{ w, w, w, w, w, w, l,hw,hw, w, r, r, r, r, w,hw,hw,hw,hw,hw,hw,hw,st},
-				{ w, r, r, r, r, r, w,hw,hw, w, r, r, r, r, h,hw,hw,hw,hw,hw,hw,hw, w},
-				{ w, r ,r, r, r, r, w,hw,hw, w, r, r, r, r, w,hw,hw, s, s, s, s, s, s},
-				{ w, r ,r, r, r, r, w,hw,hw, w, r, r, r, r, w,hw,hw, s, s, s, s, s, s},
-				{ w, r ,r, r, r, r, w,hw,hw, w, r, r, r, r, w,hw,hw, s, s, s, s, s, s},
-				{ w, w, w, w, w, w, w,st, w, w, w, w, w, w, w, w, w, w, s, s, s, s, s}
+				{ w, w, w, w, w, w, w,hw,hw, w, r, r, r, r, w,hw,hw,hw,hw,hw,hw,hw,st},
+				{ w, r, r, r, r, r, l,hw,hw, w, r, r, r, r, h,hw,hw,hw,hw,hw,hw,hw, w},
+				{ w, r ,r, r, r, r, w,hw,hw, w, r, r, r, r, w,hw,hw, w, s, w, w, w, w},
+				{ w, r ,r, r, r, r, w,hw,hw, w, r, r, r, r, w,hw,hw, w, r, r, r, r, w},
+				{ w, r ,r, r, r, r, w,hw,hw, w, r, r, r, r, w,hw,hw, w, r, r, r, r, w},
+				{ w, w, w, w, w, w, w,st, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w}
 				};
 		
 
