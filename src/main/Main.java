@@ -25,7 +25,7 @@ public class Main {
 		System.out.println("Please enter the number of players, it must be between 2 and 4.");
 		
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		/*
+		
 		try {
 			players = Integer.parseInt(br.readLine());
 			p = new HashSet<Player>(players);
@@ -34,7 +34,7 @@ public class Main {
 				p.add(new Player(br.readLine(), i));
 			}
 		} catch (Exception e) {}
-		*/
+		
 		@SuppressWarnings("unused")
 		Board b = new Board(p);
 		
