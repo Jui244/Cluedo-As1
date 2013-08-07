@@ -32,8 +32,22 @@ public class Board {
 
 	public Board(HashSet<Player> players){
 		rooms = new HashSet<Room>(9);
+		String k = "K"; //Kitchen
+		String dr = "D"; //DiningRoom
+		String l = "l"; //Lounge
+		String br = "B"; //BallRoom
+		String c = "C"; //Conservatory
+		String b = "B"; //BilliardRoom
+		String li = "L" ;//Library
+		String s = "S"; //Study
+		String h = "H"; //Hall
+		String w = "W"; //Wall
+		String r = "-"; //Room
+		String hw = " "; //Hall Way
+		String st = "S"; //Start Point
 		
 		//Only place a player can move on is the 'hallway' or an 'entrance'
+
 		Room kitchen = new Room("Kitchen", players.size(), null);
 		Room diningRoom = new Room("Kitchen", players.size(), null);
 		Room lounge = new Room("Lounge", players.size(), null);
@@ -43,11 +57,7 @@ public class Board {
 		Room library = new Room("Library", players.size(), null);
 		Room study = new Room("Study", players.size(), null);
 		Room hall = new Room("Hall", players.size(), null);
-		
-		w = new BoardTile(null, false);
-		hw = new BoardTile(null, false);
-		st = new BoardTile(null, false);
-		
+
 		rooms.add(kitchen);
 		rooms.add(diningRoom);
 		rooms.add(lounge);
@@ -57,63 +67,42 @@ public class Board {
 		rooms.add(library);
 		rooms.add(study);
 		rooms.add(hall);
-		
-		BoardTile k = kitchen.getTile();
-		BoardTile kE = kitchen.getEntrance();
-		
-		BoardTile dr = diningRoom.getTile();
-		BoardTile drE = diningRoom.getEntrance();
 
-		BoardTile l = lounge.getTile();
-		BoardTile lE = lounge.getEntrance();
 		
-		BoardTile br = ballRoom.getTile();
-		BoardTile brE = ballRoom.getEntrance();
-		
-		BoardTile c = conservatory.getTile();
-		BoardTile cE = conservatory.getEntrance();
-		
-		BoardTile b = billiardRoom.getTile();
-		BoardTile bE = billiardRoom.getEntrance();
-		
-		BoardTile li = library.getTile();
-		BoardTile liE = library.getEntrance();
-		
-		BoardTile s = study.getTile();
-		BoardTile sE = study.getEntrance();
-		
-		BoardTile h = hall.getTile();
-		BoardTile hE = hall.getEntrance();
-		
-		
-		BoardTile[][] board = {
+		String[][] board = {
 				{ w, w, w, w, w, w, w, w, w,st, w, w, w,st, w, w, w, w, w, w, w, w, w},
-				{ k, k, k, k, k, k, w,hw,hw,hw,br,br,br,hw,hw,hw, w, c, c, c, c, c, c},
-				{ k, k, k, k, k, k,hw,hw,br,br,br,br,br,br,br,hw,hw, c, c, c, c, c, c},
-				{ k, k, k, k, k, k,hw,hw,br,br,br,br,br,br,br,hw,hw, c, c, c, c, c, c},
-				{ k, k, k, k, k,k,hw,hw,brE,br,br,br,br,br,brE,hw,hw,hw,c, c, c, c, w},
-				{ w, k, k, k,kE, k,hw,hw,br,br,br,br,br,br,br,hw,hw,hw,hw,hw,hw,hw,st},
-				{hw,hw,hw,hw,hw,hw,hw,hw,br,brE,br,br,br,br,brE,br,hw,hw,hw,hw,hw,hw,hw,w},
-				{ w,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw, b, b, b, b, b, b},
-				{dr,dr,dr,dr,dr,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,bE, b, b, b, b, b},
-				{dr,dr,dr,dr,dr,dr,dr,dr,hw,hw, w, w, w, w,hw,hw,hw, b, b, b, b, b, b},
-				{dr,dr,dr,dr,dr,dr,dr,dr,hw,hw, w, w, w, w,hw,hw,hw, b, b, b, b, b, b},
-				{dr,dr,dr,dr,dr,dr,dr,drE,hw,hw,w, w, w, w,hw,hw,hw, b, b, b, b,bE, b},
-				{dr,dr,dr,dr,dr,dr,dr,dr,hw,hw, w, w, w, w,hw,hw,hw,hw,hw,hw,hw,hw,hw},
-				{dr,dr,dr,dr,dr,dr,dr,dr,hw,hw, w, w, w, w,hw,hw,hw,li,li,liE,li,li,w},
-				{dr,dr,dr,dr,dr,dr,drE,dr,hw,hw,w, w, w, w,hw,hw,li,li,li,li,li,li,li},
-				{ w,hw,hw,hw,hw,hw,hw,hw,hw,hw, w, w, w, w,hw,hw,liE,li,li,li,li,li,li},
-				{st,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,li,li,li,li,li,li,li},
-				{ w,hw,hw,hw,hw,hw,hw,hw,hw, h, h,hE,hE, h, h,hw,hw,hw,li,li,li,li,li},
-				{ l, l, l, l, l, l,lE,hw,hw, h, h, h, h, h, h,hw,hw,hw,hw,hw,hw,hw,st},
-				{ l, l, l, l, l, l, l,hw,hw, h, h, h, h, h,hE,hw,hw,hw,hw,hw,hw,hw, w},
-				{ l, l ,l, l, l, l, l,hw,hw, h, h, h, h, h, h,hw,hw,sE, s, s, s, s, s},
-				{ l, l ,l, l, l, l, l,hw,hw, h, h, h, h, h, h,hw,hw, s, s, s, s, s, s},
-				{ l, l ,l, l, l, l, l,hw,hw, h, h, h, h, h, h,hw,hw, s, s, s, s, s, s},
-				{ l, l, l, l, l, l, w,st, w, h, h, h, h, h, h, w,hw, w, s, s, s, s, s}
+				{ w, r, r, r, r, w, w,hw,hw,hw, w, r, w,hw,hw,hw, w, w, c, c, c, c, w},
+				{ w, r, r, r, r, w,hw,hw, w, w, w, r, w, w, w,hw,hw, w, c, c, c, c, w},
+				{ w, r, r, r, r, w,hw,hw, w, r, r, r, r, r, w,hw,hw, c, c, c, c, c, w},
+				{ w, r, r, r, r, w,hw,hw,br, r, r, r, r, r,br,hw,hw,hw, w, w, w, w, w},
+				{ w, w, w, w, r, w,hw,hw, w, r, r, r, r, r, w,hw,hw,hw,hw,hw,hw,hw,st},
+				{ w,hw,hw,hw,hw,hw,hw,hw, w,br, w, w, w, w,br,hw,hw,hw,hw,hw,hw,hw, w},
+				{ w,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw, w, w, w, w, w, w},
+				{ w, w, w, w, w,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw, b, r, r, r, r, w},
+				{ w, r, r, r, w, w, w, w,hw,hw, w, w, w, w,hw,hw,hw, w, r, r, r, r, w},
+				{ w, r, r, r, r, r, r, w,hw,hw, w, w, w, w,hw,hw,hw, w, r, r, r, r, w},
+				{ w, r, r, r, r, r, r,dr,hw,hw, w, w, w, w,hw,hw,hw, w, w, w, w, b, w},
+				{ w, r, r, r, r, r, r, w,hw,hw, w, w, w, w,hw,hw,hw,hw,hw,hw,hw,hw, w},
+				{ w, r, r, r, r, r, r, w,hw,hw, w, w, w, w,hw,hw,hw, w, w,li, w, w, w},
+				{ w, w, w, w, w, w,dr, w,hw,hw, w, w, w, w,hw,hw, w, w, r, r, r, r, w},
+				{ w,hw,hw,hw,hw,hw,hw,hw,hw,hw, w, w, w, w,hw,hw,li, r, r, r, r, r, w},
+				{st,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw, w, w, w, r, r, r, w},
+				{ w,hw,hw,hw,hw,hw,hw,hw,hw, w, w, h, h, w, w,hw,hw,hw, w, w, w, w, w},
+				{ w, w, w, w, w, w, l,hw,hw, w, r, r, r, r, w,hw,hw,hw,hw,hw,hw,hw,st},
+				{ w, r, r, r, r, r, w,hw,hw, w, r, r, r, r, h,hw,hw,hw,hw,hw,hw,hw, w},
+				{ w, r ,r, r, r, r, w,hw,hw, w, r, r, r, r, w,hw,hw, s, s, s, s, s, s},
+				{ w, r ,r, r, r, r, w,hw,hw, w, r, r, r, r, w,hw,hw, s, s, s, s, s, s},
+				{ w, r ,r, r, r, r, w,hw,hw, w, r, r, r, r, w,hw,hw, s, s, s, s, s, s},
+				{ w, w, w, w, w, w, w,st, w, w, w, w, w, w, w, w, w, w, s, s, s, s, s}
 				};
-		this.board = board;
+		
 
+for(int i = 0; i < board.length; i++){
+	for(int j = 0; j < board[i].length; j++){
+		System.out.printf("%s ",board[i][j]);
+	}
+	System.out.println();
+}
 
 		//add rooms to deck
 		//add characters to deck
