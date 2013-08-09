@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 
 import piece.BoardTile;
 import piece.GameObject;
@@ -72,6 +71,10 @@ public class Board {
 		
 		init();
 		
+		for(Player p: players){
+			System.out.println(p.getCharacter());
+		}
+		
 		Weapon candleStick = new Weapon("Candle Stick");
 		Weapon dagger = new Weapon("Dagger");
 		Weapon leadPipe = new Weapon("Lead Pipe");
@@ -115,12 +118,9 @@ public class Board {
 		rooms.add(hall);
 	
 		Collections.shuffle(rooms);
-		
-
-		
+				
 		hand.addAll(rooms);
 		hand.addAll(weapons);
-		
 		
 		BoardTile k = new BoardTile("K", kitchen); //Kitchen
 		BoardTile dr = new BoardTile("D", diningRoom); //DiningRoom
@@ -185,7 +185,7 @@ for(int i = 0; i < board.length; i++){
 		System.out.println("Please enter the number of players, it must be between 2 and 4.");
 
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
+		boolean selected;
 		try {
 			int player = Integer.parseInt(br.readLine());
 			for(int i = 1; i < player + 1; i++){
@@ -194,13 +194,18 @@ for(int i = 0; i < board.length; i++){
 					System.out.printf("%s \n",c.getName());
 				}
 				System.out.printf("-----------------------------------------\n");
-				String playerChoice = br.readLine();
 
-				for(int j = 0; j < characters.size(); j++){ 
-					GameCharacter c = characters.get(i);
-					if(c.getName().equals(playerChoice)){
-						players.add(new Player(c, i));
-						characters.remove(j);
+				selected = false;
+				while(!selected){
+					String playerChoice = br.readLine();
+					playerChoice.trim();
+					for(int j = 0; j < characters.size(); j++){ 
+						GameCharacter c = characters.get(j);
+						if(c.getName().equalsIgnoreCase(playerChoice)){
+							players.add(new Player(c, i));
+							characters.remove(j);
+							selected = true;
+						}
 					}
 				}
 			}
