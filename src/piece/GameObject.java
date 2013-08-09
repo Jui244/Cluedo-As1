@@ -1,6 +1,5 @@
 package piece;
 
-import board.Room;
 
 /**
  * yeah.. think you can figure this one out :P

@@ -1,9 +1,8 @@
-package board;
+package piece;
 
 import java.util.HashSet;
 
 import game.Player;
-import piece.Weapon;
 /**
  * So each room can store a number of players and weapons,
  * A room has a name, a set of weapons and, a set of players
@@ -15,18 +14,16 @@ import piece.Weapon;
  * @author Potato
  *
  */
-public class Room {
+public class Room extends GameObject{
 	
 	private Room hiddenPassage;
-	private boolean hasPassage;
 	private HashSet<Weapon> contains;
 	private HashSet<Player> players;
 	private String name;
 	
-	public Room(String name, int players, HashSet<Weapon> startingWeapons){
-		this.players = new HashSet<Player>(players);
-		contains = startingWeapons;
-		hasPassage = false;
+	public Room(String name){
+		this.players = new HashSet<Player>();
+		contains = new HashSet<Weapon>();
 		this.name = name;
 	}
 
@@ -48,22 +45,10 @@ public class Room {
 	public boolean containsWeapon(Weapon w){
 		return contains.contains(w);
 	}
-	public void setPassage(Room r){
-		hiddenPassage = r;
-		hasPassage = true;
-	}
-	public boolean hasPassage(){
-		return hasPassage;
-	}
 	public Room getPassage(){
 		return hiddenPassage;
 	}
-	public BoardTile getTile(){
-		return new BoardTile(this, false);
-	}
-	public BoardTile getEntrance(){
-		return new BoardTile(this, true);
-	}
+
 	public String getName(){
 		return name;
 	}
