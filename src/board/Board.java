@@ -35,7 +35,12 @@ public class Board {
 	private ArrayList<Room> rooms;
 	private ArrayList<Weapon> weapons;
 	private ArrayList<GameCharacter> characters;
-	private ArrayList<GameObject> hand;
+	private ArrayList<GameObject> deck;
+	
+	private Crime crime;
+	private GameCharacter murderer;
+	private Room murderRoom;
+	private Weapon murderWeapon;
 	
 	@SuppressWarnings("unused")
 	private BoardTile[][] board;
@@ -47,7 +52,7 @@ public class Board {
 		rooms = new ArrayList<Room>(9);
 		weapons = new ArrayList<Weapon>(6);
 		characters = new ArrayList<GameCharacter>(6);
-		hand = new ArrayList<GameObject>();
+		deck = new ArrayList<GameObject>();
 		players = new ArrayList<Player>(4);
 		
 		//Only place a player can move on is the 'hallway' or an 'entrance'
@@ -66,8 +71,12 @@ public class Board {
 		characters.add(rGree);
 		characters.add(mPeac);
 		characters.add(pPlum);
+
+		deck.addAll(characters);
 		
-		hand.addAll(characters);
+		Collections.shuffle(deck);
+		murderer = (GameCharacter) deck.get(0);
+		deck.remove(0);
 		
 		init();
 		
@@ -90,6 +99,9 @@ public class Board {
 		weapons.add(spanner);
 		
 		Collections.shuffle(weapons);
+		murderWeapon = weapons.get(0);
+		weapons.remove(0);
+		deck.addAll(weapons);
 		
 		Room kitchen = new Room("Kitchen");
 		kitchen.addWeapon(weapons.get(0));
@@ -118,9 +130,10 @@ public class Board {
 		rooms.add(hall);
 	
 		Collections.shuffle(rooms);
-				
-		hand.addAll(rooms);
-		hand.addAll(weapons);
+		murderRoom = rooms.get(0);
+		rooms.remove(0);
+		deck.addAll(rooms);
+		
 		
 		BoardTile k = new BoardTile("K", kitchen); //Kitchen
 		BoardTile dr = new BoardTile("D", diningRoom); //DiningRoom
