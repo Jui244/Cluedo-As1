@@ -37,6 +37,7 @@ public class Board {
 	private ArrayList<GameCharacter> characters;
 	private ArrayList<GameObject> deck;
 	
+	@SuppressWarnings("unused")
 	private Crime crime;
 	private GameCharacter murderer;
 	private Room murderRoom;
@@ -134,6 +135,7 @@ public class Board {
 		rooms.remove(0);
 		deck.addAll(rooms);
 		
+		crime = new Crime(murderWeapon, murderRoom, murderer);
 		
 		BoardTile k = new BoardTile("K", kitchen); //Kitchen
 		BoardTile dr = new BoardTile("D", diningRoom); //DiningRoom
@@ -241,7 +243,13 @@ for(int i = 0; i < board.length; i++){
 			this.r = r;
 			this.c = c;
 		}
-		
+		@SuppressWarnings("unused")
+		public boolean accusation(Weapon w, Room r, GameCharacter c){
+			if(this.w.equals(w) && this.r.equals(r) && this.c.equals(c)){
+				return true;
+			}
+			return false;
+		}
 		
 	}
 }

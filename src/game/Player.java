@@ -33,4 +33,7 @@ public class Player {
 	public BoardTile getPiece(){
 		return piece;
 	}	
+	public ArrayList<GameObject> getHand(){
+		return hand;
+	}
 }

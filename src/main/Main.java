@@ -1,7 +1,6 @@
 package main;
 
-import game.Player;
-import java.util.HashSet;
+
 
 import board.Board;
 /**
@@ -13,12 +12,8 @@ import board.Board;
  *
  */
 public class Main {
-	
-
-	private static HashSet<Player> p;
-	
 	public static void main(String[] args) {
+		@SuppressWarnings("unused")
 		Board b = new Board();
 	}
-
 }
