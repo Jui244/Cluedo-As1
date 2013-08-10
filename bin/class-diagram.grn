@@ -64,9 +64,9 @@
       <y="639"/>
    </type>
    <relationship>
-      <class="edu.buffalo.cse.green.relationship.association.AssociationPart"/>
-      <sourceType="=Cluedo/src<board{Board.java[Board[Crime"/>
-      <targetType="=Cluedo/src<piece{Weapon.java[Weapon"/>
+      <class="edu.buffalo.cse.green.relationship.composition.CompositionPart"/>
+      <sourceType="=Cluedo/src<board{Board.java[Board"/>
+      <targetType="=Cluedo/src<board{Board.java[Board[Crime"/>
       <bendpoints>
       </bendpoints>
    </relationship>
@@ -78,16 +78,44 @@
       </bendpoints>
    </relationship>
    <relationship>
-      <class="edu.buffalo.cse.green.relationship.dependency.DependencyLPart"/>
-      <sourceType="=Cluedo/src<board{Board.java[Board"/>
-      <targetType="=Cluedo/src<piece{Weapon.java[Weapon"/>
+      <class="edu.buffalo.cse.green.relationship.generalization.GeneralizationPart"/>
+      <sourceType="=Cluedo/src<piece{Weapon.java[Weapon"/>
+      <targetType="=Cluedo/src<piece{GameObject.java[GameObject"/>
       <bendpoints>
       </bendpoints>
    </relationship>
    <relationship>
       <class="edu.buffalo.cse.green.relationship.dependency.DependencyLPart"/>
       <sourceType="=Cluedo/src<board{Board.java[Board"/>
+      <targetType="=Cluedo/src<piece{Room.java[Room"/>
+      <bendpoints>
+      </bendpoints>
+   </relationship>
+   <relationship>
+      <class="edu.buffalo.cse.green.relationship.composition.CompositionPart"/>
+      <sourceType="=Cluedo/src<game{Player.java[Player"/>
+      <targetType="=Cluedo/src<piece{BoardTile.java[BoardTile"/>
+      <bendpoints>
+      </bendpoints>
+   </relationship>
+   <relationship>
+      <class="edu.buffalo.cse.green.relationship.dependency.DependencyLPart"/>
+      <sourceType="=Cluedo/src<board{Board.java[Board"/>
+      <targetType="=Cluedo/src<piece{BoardTile.java[BoardTile"/>
+      <bendpoints>
+      </bendpoints>
+   </relationship>
+   <relationship>
+      <class="edu.buffalo.cse.green.relationship.association.AssociationPart"/>
+      <sourceType="=Cluedo/src<board{Board.java[Board[Crime"/>
       <targetType="=Cluedo/src<piece{GameCharacter.java[GameCharacter"/>
+      <bendpoints>
+      </bendpoints>
+   </relationship>
+   <relationship>
+      <class="edu.buffalo.cse.green.relationship.association.AssociationPart"/>
+      <sourceType="=Cluedo/src<board{Board.java[Board[Crime"/>
+      <targetType="=Cluedo/src<piece{Room.java[Room"/>
       <bendpoints>
       </bendpoints>
    </relationship>
@@ -101,49 +129,7 @@
    <relationship>
       <class="edu.buffalo.cse.green.relationship.association.AssociationPart"/>
       <sourceType="=Cluedo/src<board{Board.java[Board[Crime"/>
-      <targetType="=Cluedo/src<piece{GameCharacter.java[GameCharacter"/>
-      <bendpoints>
-      </bendpoints>
-   </relationship>
-   <relationship>
-      <class="edu.buffalo.cse.green.relationship.dependency.DependencyLPart"/>
-      <sourceType="=Cluedo/src<board{Board.java[Board"/>
-      <targetType="=Cluedo/src<piece{BoardTile.java[BoardTile"/>
-      <bendpoints>
-      </bendpoints>
-   </relationship>
-   <relationship>
-      <class="edu.buffalo.cse.green.relationship.association.AssociationPart"/>
-      <sourceType="=Cluedo/src<game{Player.java[Player"/>
-      <targetType="=Cluedo/src<piece{GameCharacter.java[GameCharacter"/>
-      <bendpoints>
-      </bendpoints>
-   </relationship>
-   <relationship>
-      <class="edu.buffalo.cse.green.relationship.composition.CompositionPart"/>
-      <sourceType="=Cluedo/src<board{Board.java[Board"/>
-      <targetType="=Cluedo/src<board{Board.java[Board[Crime"/>
-      <bendpoints>
-      </bendpoints>
-   </relationship>
-   <relationship>
-      <class="edu.buffalo.cse.green.relationship.dependency.DependencyLPart"/>
-      <sourceType="=Cluedo/src<board{Board.java[Board"/>
-      <targetType="=Cluedo/src<piece{Room.java[Room"/>
-      <bendpoints>
-      </bendpoints>
-   </relationship>
-   <relationship>
-      <class="edu.buffalo.cse.green.relationship.association.AssociationPart"/>
-      <sourceType="=Cluedo/src<board{Board.java[Board[Crime"/>
-      <targetType="=Cluedo/src<piece{Room.java[Room"/>
-      <bendpoints>
-      </bendpoints>
-   </relationship>
-   <relationship>
-      <class="edu.buffalo.cse.green.relationship.generalization.GeneralizationPart"/>
-      <sourceType="=Cluedo/src<piece{Weapon.java[Weapon"/>
-      <targetType="=Cluedo/src<piece{GameObject.java[GameObject"/>
+      <targetType="=Cluedo/src<piece{Weapon.java[Weapon"/>
       <bendpoints>
       </bendpoints>
    </relationship>
@@ -155,9 +141,30 @@
       </bendpoints>
    </relationship>
    <relationship>
+      <class="edu.buffalo.cse.green.relationship.dependency.DependencyLPart"/>
+      <sourceType="=Cluedo/src<board{Board.java[Board"/>
+      <targetType="=Cluedo/src<piece{GameCharacter.java[GameCharacter"/>
+      <bendpoints>
+      </bendpoints>
+   </relationship>
+   <relationship>
       <class="edu.buffalo.cse.green.relationship.generalization.GeneralizationPart"/>
       <sourceType="=Cluedo/src<piece{BoardTile.java[BoardTile"/>
       <targetType="=Cluedo/src<piece{GameObject.java[GameObject"/>
+      <bendpoints>
+      </bendpoints>
+   </relationship>
+   <relationship>
+      <class="edu.buffalo.cse.green.relationship.dependency.DependencyLPart"/>
+      <sourceType="=Cluedo/src<board{Board.java[Board"/>
+      <targetType="=Cluedo/src<piece{Weapon.java[Weapon"/>
+      <bendpoints>
+      </bendpoints>
+   </relationship>
+   <relationship>
+      <class="edu.buffalo.cse.green.relationship.association.AssociationPart"/>
+      <sourceType="=Cluedo/src<game{Player.java[Player"/>
+      <targetType="=Cluedo/src<piece{GameCharacter.java[GameCharacter"/>
       <bendpoints>
       </bendpoints>
    </relationship>
