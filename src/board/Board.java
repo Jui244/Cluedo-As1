@@ -43,7 +43,6 @@ public class Board {
 	private Room murderRoom;
 	private Weapon murderWeapon;
 	
-	@SuppressWarnings("unused")
 	private BoardTile[][] board;
 	
 	private boolean killerFound = false;
