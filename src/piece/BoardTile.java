@@ -12,6 +12,7 @@ public class BoardTile extends GameObject{
 	
 	public BoardTile(String s, Room r){
 		this.s = s;
+		this.room = r;
 	}
 	public Room getRoom(){
 		return room;

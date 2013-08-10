@@ -119,7 +119,12 @@ public class Board {
 		Room library = new Room("Library");
 		Room study = new Room("Study");
 		Room hall = new Room("Hall");
-
+		
+		kitchen.setPassage(study);
+		study.setPassage(kitchen);
+		conservatory.setPassage(lounge);
+		lounge.setPassage(conservatory);
+		
 		rooms.add(kitchen);
 		rooms.add(diningRoom);
 		rooms.add(lounge);
@@ -148,6 +153,7 @@ public class Board {
 		crime = new Crime(murderWeapon, murderRoom, murderer);
 
 		BoardTile k = new BoardTile("K", kitchen); //Kitchen
+		
 		BoardTile dr = new BoardTile("D", diningRoom); //DiningRoom
 		BoardTile l = new BoardTile("l", lounge); //Lounge
 		BoardTile br = new BoardTile("B", ballRoom); //BallRoom
@@ -156,8 +162,8 @@ public class Board {
 		BoardTile li = new BoardTile("L", library); //Library
 		BoardTile s = new BoardTile("S", study); //Study
 		BoardTile h = new BoardTile("H", hall); //Hall
+
 		BoardTile w = new BoardTile("W", null); //Wall, check if the position is a wall if it is don't move through it... duh.
-		BoardTile r = new BoardTile("-", null); //Room, while a player is inside a room he should be able to move freely without any cost, so before moving check if it's an instance of this.
 		BoardTile hw = new BoardTile(" ", null); //Hall Way, the best kind of way
 		BoardTile st = new BoardTile("S", null); //Start Point, spawn point
 
@@ -165,28 +171,28 @@ public class Board {
 
 		BoardTile[][] initBoard = {
 				{ w, w, w, w, w, w, w, w, w,st, w, w, w,st, w, w, w, w, w, w, w, w, w},
-				{ w, r, r, r, r, w, w,hw,hw,hw, w, r, w,hw,hw,hw, w, w, r, r, r, r, w},
-				{ w, r, r, r, r, w,hw,hw, w, w, w, r, w, w, w,hw,hw, w, r, r, r, r, w},
-				{ w, r, r, r, r, w,hw,hw, w, r, r, r, r, r, w,hw,hw, c, r, r, r, r, w},
-				{ w, r, r, r, r, w,hw,hw,br, r, r, r, r, r,br,hw,hw,hw, w, w, w, w, w},
-				{ w, w, w, w, k, w,hw,hw, w, r, r, r, r, r, w,hw,hw,hw,hw,hw,hw,hw,st},
+				{ w, k, k, k, k, w, w,hw,hw,hw, w,br, w,hw,hw,hw, w, w, c, c, c, c, w},
+				{ w, k, k, k, k, w,hw,hw, w, w, w,br, w, w, w,hw,hw, w, c, c, c, c, w},
+				{ w, k, k, k, k, w,hw,hw, w,br,br,br,br,br, w,hw,hw, c, c, c, c, c, w},
+				{ w, k, k, k, k, w,hw,hw,br,br,br,br,br,br,br,hw,hw,hw, w, w, w, w, w},
+				{ w, w, w, w, k, w,hw,hw, w,br,br,br,br,br, w,hw,hw,hw,hw,hw,hw,hw,st},
 				{ w,hw,hw,hw,hw,hw,hw,hw, w,br, w, w, w,br, w,hw,hw,hw,hw,hw,hw,hw, w},
 				{ w,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw, w, w, w, w, w, w},
-				{ w, w, w, w, w,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw, b, r, r, r, r, w},
-				{ w, r, r, r, w, w, w, w,hw,hw, w, w, w, w,hw,hw,hw, w, r, r, r, r, w},
-				{ w, r, r, r, r, r, r, w,hw,hw, w, w, w, w,hw,hw,hw, w, r, r, r, r, w},
-				{ w, r, r, r, r, r, r,dr,hw,hw, w, w, w, w,hw,hw,hw, w, w, w, w, b, w},
-				{ w, r, r, r, r, r, r, w,hw,hw, w, w, w, w,hw,hw,hw,hw,hw,hw,hw,hw, w},
-				{ w, r, r, r, r, r, r, w,hw,hw, w, w, w, w,hw,hw,hw, w, w,li, w, w, w},
-				{ w, w, w, w, w, w,dr, w,hw,hw, w, w, w, w,hw,hw, w, w, r, r, r, r, w},
-				{ w,hw,hw,hw,hw,hw,hw,hw,hw,hw, w, w, w, w,hw,hw,li, r, r, r, r, r, w},
-				{st,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw, w, w, w, r, r, r, w},
+				{ w, w, w, w, w,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw, b, b, b, b, b, w},
+				{ w,dr,dr,dr, w, w, w, w,hw,hw, w, w, w, w,hw,hw,hw, w, b, b, b, b, w},
+				{ w,dr,dr,dr,dr,dr,dr, w,hw,hw, w, w, w, w,hw,hw,hw, w, b, b, b, b, w},
+				{ w,dr,dr,dr,dr,dr,dr,dr,hw,hw, w, w, w, w,hw,hw,hw, w, w, w, w, b, w},
+				{ w,dr,dr,dr,dr,dr,dr, w,hw,hw, w, w, w, w,hw,hw,hw,hw,hw,hw,hw,hw, w},
+				{ w,dr,dr,dr,dr,dr,dr, w,hw,hw, w, w, w, w,hw,hw,hw, w, w,li, w, w, w},
+				{ w, w, w, w, w, w,dr, w,hw,hw, w, w, w, w,hw,hw, w, w,li,li,li,li, w},
+				{ w,hw,hw,hw,hw,hw,hw,hw,hw,hw, w, w, w, w,hw,hw,li,li,li,li,li,li, w},
+				{st,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw, w, w, w,li,li,li, w},
 				{ w,hw,hw,hw,hw,hw,hw,hw,hw, w, w, h, h, w, w,hw,hw,hw, w, w, w, w, w},
-				{ w, w, w, w, w, w, w,hw,hw, w, r, r, r, r, w,hw,hw,hw,hw,hw,hw,hw,st},
-				{ w, r, r, r, r, r, l,hw,hw, w, r, r, r, r, h,hw,hw,hw,hw,hw,hw,hw, w},
-				{ w, r ,r, r, r, r, w,hw,hw, w, r, r, r, r, w,hw,hw, w, s, w, w, w, w},
-				{ w, r ,r, r, r, r, w,hw,hw, w, r, r, r, r, w,hw,hw, w, r, r, r, r, w},
-				{ w, r ,r, r, r, r, w,hw,hw, w, r, r, r, r, w,hw,hw, w, r, r, r, r, w},
+				{ w, w, w, w, w, w, w,hw,hw, w, h, h, h, h, w,hw,hw,hw,hw,hw,hw,hw,st},
+				{ w, l, l, l, l, l, l,hw,hw, w, h, h, h, h, h,hw,hw,hw,hw,hw,hw,hw, w},
+				{ w, l ,l, l, l, l, w,hw,hw, w, h, h, h, h, w,hw,hw, w, s, w, w, w, w},
+				{ w, l ,l, l, l, l, w,hw,hw, w, h, h, h, h, w,hw,hw, w, s, s, s, s, w},
+				{ w, l ,l, l, l, l, w,hw,hw, w, h, h, h, h, w,hw,hw, w, s, s, s, s, w},
 				{ w, w, w, w, w, w, w,st, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w}
 		};
 		//Puts the players into there starting locations
@@ -238,7 +244,7 @@ public class Board {
 				}
 				else{
 					if(temp.getRoom()!=null && temp.getRoom().getPassage()!=null){
-						System.out.println("Would you like to move to: " + temp.getRoom().print() + ". y/n");
+						System.out.println("Would you like to move to: " + temp.getRoom().getPassage().print() + ". y/n");
 						ans = buff.readLine();
 						if(ans.equalsIgnoreCase("y"))break;//move player to next room allow them to make a guess
 					}else{
@@ -248,18 +254,18 @@ public class Board {
 						System.out.println("Hint: Enter how many units you would like to move horizontal by 'x=*' and how many verticle by 'y=*', you can have multiple" +
 								"\nof these if you wish to have a more complex move.\nExample input x=2,y=3 to move east 2 and south 3 or y=-2,x=3 to move north 2 and east 3.");
 
-						@SuppressWarnings("unused")
 						int rollCond = 0;
 						int x = 0;
 						int y = 0;
-						
+
 						boolean canMove = true;
-						
-							read = null;
-							while(read == null || read.length <= 1){
-								ans = buff.readLine();
-								read = ans.split(",");
-							}
+
+						read = null;
+						while(read == null || read.length <= 1){
+							ans = buff.readLine();
+							read = ans.split(",");
+						}
+						while(rollCond!=roll){
 							for(int j = 0; j < read.length; j++){//need to check if the length is equal to the roll or if they enter a room, also if there is a wall in the path;
 								if(canMove == false){
 									read = null;
@@ -267,11 +273,12 @@ public class Board {
 										ans = buff.readLine();
 										read = ans.split(",");
 									}
+
 									j = 0;
 								}
 								String[] readC = read[j].split("=");//I guess this loop is just making sure the player enters a valid move... feel like it could be better
 								int tempI = Integer.parseInt(readC[1]);//works though
-								rollCond += tempI;
+								rollCond += Math.abs(tempI);
 								if(readC[0].equalsIgnoreCase("x")){	
 									x += tempI;
 									canMove = (canMove(temp,tempI,y,"x"));
@@ -283,24 +290,30 @@ public class Board {
 									//check if it can move north or south
 								}
 							}
-							BoardTile tempP =  board[y+temp.y][x+temp.x];
-							board[y+temp.y][x + temp.x] = temp.getPiece();
-							board[temp.y][temp.x] = temp.getPrevPos();
-							temp.setPrevPos(x+temp.x, y+temp.y,tempP);
-							System.out.println((temp.y + x) + " " + (temp.x + y));
-							
+							if(rollCond<roll && board[y+temp.y][x+temp.x].getRoom()!=null){
+								break;
+							} else canMove = false;
+						}
+						
+						BoardTile tempP =  board[y+temp.y][x+temp.x];
+						board[y+temp.y][x + temp.x] = temp.getPiece();
+						board[temp.y][temp.x] = temp.getPrevPos();
+						temp.setPrevPos(x+temp.x, y+temp.y,tempP);
+						System.out.println((temp.y + x) + " " + (temp.x + y));
 
-							//also need to check that rollCond is not less than roll
-							//move the player to the new position, might make a special case for when in a room.
-
-							if(temp.getRoom() != null){
-								System.out.println("Make a guess.");
-								System.out.println("Hint: Make sure to spell everything correctly, with commas between each item");
-								ans = buff.readLine();
+						//also need to check that rollCond is not less than roll
+						//move the player to the new position, might make a special case for when in a room.
+						System.out.println(tempP.getRoom());
+						if(tempP.getRoom() != null){
+							System.out.println("Make a guess.");
+							System.out.println("Hint: Make sure to spell everything correctly, with commas between each item");
+							ans = buff.readLine();
 							count = i + 1;
+
 							if(count == players.size()){
 								count = 0;
 							}
+
 							for(int j = count; j < players.get(j).getHand().size();j++){
 								if(temp.equals(players.get(j))){
 									System.out.println("Player: " + players.get(i).playerNumber + " wins the game!");
@@ -308,6 +321,8 @@ public class Board {
 									killerFound = true;
 									return;
 								}
+								if(j == players.size()-1)
+									j = 0;//the only way out of this loop should be buy winning or showing a card and breaking.
 								//iterate though all the players seeing if the can disprove
 							}
 
@@ -316,25 +331,10 @@ public class Board {
 				}
 				printBoard();
 			}
-			//print out who ever's turn it is
-			//print players hand
-			//Ask if they want to make there final accusation
-			//check if they're in a room with a passageway
-			//if so ask if they would like to go to other room.
-			//roll dice and ask for co-or. Use a* to check if they can reach it otherwise re ask for input.
-			//if they enter a room allow them to make a guess
-			//guess must use the same room the player is in. move the player accused and the weapon to the room the players in.
-			//iterate through the players, if the next player can prove that the accusation is wrong they must otherwise the next player must
-			//print board
-			//if everyone passes player wins.
 		}
 	}
-	/**
+	/*
 	 * returns true if there are no walls between the two positions and the the move is within the bounds of the board.
-	 * @param p
-	 * @param x
-	 * @param y
-	 * @return
 	 */
 	public boolean canMove(Player p, int x, int y, String s){
 		int tempS = 0;
@@ -343,7 +343,7 @@ public class Board {
 			if(y < 0){
 				tempS = p.y+y; 
 				tempE = p.y;
-				}
+			}
 			else {
 				tempS = p.y;
 				tempE = p.y + y;
@@ -357,7 +357,7 @@ public class Board {
 			if(x < 0){
 				tempS = p.x+x; 
 				tempE = p.x;
-				}
+			}
 			else {
 				tempS = p.x;
 				tempE = p.x+x;
@@ -369,7 +369,7 @@ public class Board {
 			}
 		}
 		return true;
-		
+
 	}
 	public void printBoard(){
 		for(int i = 0; i < board.length; i++){
