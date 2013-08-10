@@ -195,7 +195,7 @@ public class Board {
 		for(int i = 0; i < board.length; i++){
 			for(int j = 0; j < board[i].length;j++){
 				if(board[i][j].equals(st)){
-					players.get(count).setPrevPos(i, j, board[i][j]);
+					players.get(count).setPrevPos(j, i, board[i][j]);
 					board[i][j] = players.get(count).getPiece();
 					count++;
 				}
@@ -236,7 +236,7 @@ public class Board {
 						System.out.println("You rolled a " + roll + "!");
 						System.out.println("What co-or would you like to move to?");
 						System.out.println("Hint: Enter how many units you would like to move horizontal by 'x=*' and how many verticle by 'y=*', you can have multiple" +
-								"\nof these if you wish to have a more complex move.\nExample input x=2,y=3 to move east 2 and north 3 or y=-2,x=3 to move south 2 and east 3.");
+								"\nof these if you wish to have a more complex move.\nExample input x=2,y=3 to move east 2 and south 3 or y=-2,x=3 to move north 2 and east 3.");
 						read = null;
 						while(read == null || read.length <= 1){
 							ans = buff.readLine();
@@ -246,6 +246,7 @@ public class Board {
 						int rollCond = 0;
 						int x = temp.x;
 						int y = temp.y;
+						
 						for(int j = 0; j < read.length; j++){//need to check if the length is equal to the roll or if they enter a room, also if there is a wall in the path;
 							String[] readC = read[j].split("=");//I guess this loop is just making sure the player enters a valid move... feel like it could be better
 							int tempI = Integer.parseInt(readC[1]);//works though
@@ -263,8 +264,12 @@ public class Board {
 							if(rollCond > roll){
 								break;
 							}
-							//if it reaches the end we know that it's equal to the roll and that there where no walls in the way.
 						}
+						
+						board[temp.y][temp.x] = temp.getPrevPos();
+						temp.setPrevPos(x, y, board[y][x]);
+						board[y][x] = temp.getPiece();
+						
 						//also need to check that rollCond is not less than roll
 						//move the player to the new position, might make a special case for when in a room.
 
@@ -314,28 +319,29 @@ public class Board {
 	public boolean canMove(Player p, int x, int y){
 		int tempS = 0;
 		int tempE = 0;
-
+		System.out.println(p.y);
+		System.out.println(p.x);
 		if(x == 0){
-			if(y > 0){
-				tempS = p.y; 
-				tempE = p.y+y;
+			if(y < 0){
+				tempS = p.y+y; 
+				tempE = p.y;
 				}
 			else {
-				tempS = p.y + y;
-				tempE = p.y;
+				tempS = p.y;
+				tempE = p.y + y;
 			}
 			for(int i = tempS; i < tempE; i++){
 				if(board[p.x][i] == null || board[p.x][i].print().equalsIgnoreCase("W"))
 					return false;
 			}
 		} else {
-			if(x > 0){
-				tempS = p.x; 
-				tempE = p.x+x;
+			if(x < 0){
+				tempS = p.x+x; 
+				tempE = p.x;
 				}
 			else {
-				tempS = p.x + x;
-				tempE = p.x;
+				tempS = p.x;
+				tempE = p.x + x;
 			}
 			for(int i = tempS; i < tempE; i++){
 				if(board[i][p.y] == null || board[i][p.y].print().equalsIgnoreCase("W"))

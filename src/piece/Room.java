@@ -26,7 +26,6 @@ public class Room extends GameObject{
 		contains = new HashSet<Weapon>();
 		this.name = name;
 	}
-
 	public HashSet<Player> getPlayers(){
 		return players;
 	}
@@ -51,7 +50,6 @@ public class Room extends GameObject{
 	public void setPassage(Room r){
 		hiddenPassage = r;
 	}
-
 	public String print(){
 		return name;
 	}
