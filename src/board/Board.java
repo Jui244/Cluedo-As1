@@ -217,7 +217,7 @@ public class Board {
 				BufferedReader buff = new BufferedReader(new InputStreamReader(System.in));
 				String ans = buff.readLine();
 				if(ans.equalsIgnoreCase("y")){
-					while(read == null || read.length<3){
+					while(read == null || read.length!=3){
 						System.out.println("Please enter your accusation. Weapon,Room,Character");
 						ans = buff.readLine();
 						read = ans.split(",");
@@ -232,13 +232,23 @@ public class Board {
 					}else{
 						int roll = 1 + (int)(Math.random() * ((6 - 1) + 1));
 						System.out.println("You rolled a " + roll + "!");
-						System.out.println("What co-or would you like to move to? x,y");
-						ans = buff.readLine();
-						read = ans.split(",");
-						int x = Integer.parseInt(read[0]);
-						int y = Integer.parseInt(read[1]);
-						//check if the player can reach the location
-						//move the player
+						System.out.println("What co-or would you like to move to?");
+						System.out.println("Hint: Enter how many units you would like to move horizontal by 'x=*' and how many verticle by 'y=*', you can have multiple" +
+								"\n of these if you wish to have a more complex move.\nExample input x=2,y=3 to move east 2 and north 3 or y=-2,x=3 to move south 2 and east 3.");
+						read = null;
+						while(read == null || read.length <= 1){
+							ans = buff.readLine();
+							read = ans.split(",");
+						}
+						for(int j = 0; j < read.length; j++){//need to check if the length is equal to the roll or if they enter a room, also if there is a wall in the path;
+							if(read[j].startsWith("x=")){
+								
+							}
+							if(read[j].startsWith("y=")){
+								
+							}
+						}
+						//move the player to the new position, might make a special case for when in a room.
 						if(temp.getRoom() != null){
 							System.out.println("Make a guess.");
 							ans = buff.readLine();
@@ -261,6 +271,7 @@ public class Board {
 			//if everyone passes player wins.
 		}
 	}
+
 
 	public void printBoard(){
 		for(int i = 0; i < board.length; i++){
