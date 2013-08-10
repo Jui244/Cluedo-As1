@@ -237,38 +237,41 @@ public class Board {
 						System.out.println("What co-or would you like to move to?");
 						System.out.println("Hint: Enter how many units you would like to move horizontal by 'x=*' and how many verticle by 'y=*', you can have multiple" +
 								"\nof these if you wish to have a more complex move.\nExample input x=2,y=3 to move east 2 and south 3 or y=-2,x=3 to move north 2 and east 3.");
-						read = null;
-						while(read == null || read.length <= 1){
-							ans = buff.readLine();
-							read = ans.split(",");
-						}
+
 						
 						int rollCond = 0;
-						int x = temp.x;
-						int y = temp.y;
-						
-						for(int j = 0; j < read.length; j++){//need to check if the length is equal to the roll or if they enter a room, also if there is a wall in the path;
-							String[] readC = read[j].split("=");//I guess this loop is just making sure the player enters a valid move... feel like it could be better
-							int tempI = Integer.parseInt(readC[1]);//works though
-							rollCond += tempI;
-							if(readC[0].equalsIgnoreCase("x")){	
-								x += tempI;
-								System.out.println(canMove(temp,tempI,0));
-								//check if it can move west or east
+						int x = 0;
+						int y = 0;
+						boolean canMove = false;
+						while(canMove == false){
+							read = null;
+							while(read == null || read.length <= 1){
+								ans = buff.readLine();
+								read = ans.split(",");
 							}
-							if(readC[0].equalsIgnoreCase("y")){
-								y+=tempI;
-								System.out.println(canMove(temp,0, tempI));
-								//check if it can move north or south
-							}
-							if(rollCond > roll){
-								break;
+							for(int j = 0; j < read.length; j++){//need to check if the length is equal to the roll or if they enter a room, also if there is a wall in the path;
+								String[] readC = read[j].split("=");//I guess this loop is just making sure the player enters a valid move... feel like it could be better
+								int tempI = Integer.parseInt(readC[1]);//works though
+								rollCond += tempI;
+								if(readC[0].equalsIgnoreCase("x")){	
+									x += tempI;
+									canMove = (canMove(temp,tempI,y,"x"));
+									//check if it can move west or east
+								}
+								if(readC[0].equalsIgnoreCase("y")){
+									y+=tempI;
+									canMove = (canMove(temp,x, tempI,"y"));
+									//check if it can move north or south
+								}
+								if(rollCond != roll){
+									canMove = false;
+									break;
+								}
 							}
 						}
-						
 						board[temp.y][temp.x] = temp.getPrevPos();
-						temp.setPrevPos(x, y, board[y][x]);
-						board[y][x] = temp.getPiece();
+						temp.setPrevPos(x+temp.x, y+temp.y, board[y+temp.y][x+temp.x]);
+						board[y + temp.y][x+temp.y] = temp.getPiece();
 						
 						//also need to check that rollCond is not less than roll
 						//move the player to the new position, might make a special case for when in a room.
@@ -316,12 +319,10 @@ public class Board {
 	 * @param y
 	 * @return
 	 */
-	public boolean canMove(Player p, int x, int y){
+	public boolean canMove(Player p, int x, int y, String s){
 		int tempS = 0;
 		int tempE = 0;
-		System.out.println(p.y);
-		System.out.println(p.x);
-		if(x == 0){
+		if(s.equals("y")){
 			if(y < 0){
 				tempS = p.y+y; 
 				tempE = p.y;
@@ -331,7 +332,8 @@ public class Board {
 				tempE = p.y + y;
 			}
 			for(int i = tempS; i < tempE; i++){
-				if(board[p.x][i] == null || board[p.x][i].print().equalsIgnoreCase("W"))
+				System.out.println(p.x + " " + i);
+				if(board[i][p.x] == null || board[i][p.x+x].print().equalsIgnoreCase("W"))
 					return false;
 			}
 		} else {
@@ -341,10 +343,11 @@ public class Board {
 				}
 			else {
 				tempS = p.x;
-				tempE = p.x + x;
+				tempE = p.x+x;
 			}
 			for(int i = tempS; i < tempE; i++){
-				if(board[i][p.y] == null || board[i][p.y].print().equalsIgnoreCase("W"))
+				System.out.println(i + " " + p.y);
+				if(board[p.y][i] == null || board[p.y+y][i].print().equalsIgnoreCase("W"))
 					return false;
 			}
 		}
