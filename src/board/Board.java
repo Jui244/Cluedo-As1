@@ -224,6 +224,16 @@ public class Board {
 						ans = buff.readLine();
 						read = ans.split(",");
 					}
+					boolean bas = true;//Should change this later
+					if(bas){
+						System.out.println("Player: " + players.get(i).playerNumber + " wins the game!");
+					} else {
+						players.remove(i);
+						if(players.size() == 1){
+							System.out.println("Player: " + players.get(0).playerNumber + " wins the game!");
+							return;
+						}
+					}
 					//check if the accusations is true, otherwise remove the player from the game
 				}
 				else{
@@ -238,18 +248,27 @@ public class Board {
 						System.out.println("Hint: Enter how many units you would like to move horizontal by 'x=*' and how many verticle by 'y=*', you can have multiple" +
 								"\nof these if you wish to have a more complex move.\nExample input x=2,y=3 to move east 2 and south 3 or y=-2,x=3 to move north 2 and east 3.");
 
-						
+						@SuppressWarnings("unused")
 						int rollCond = 0;
 						int x = 0;
 						int y = 0;
-						boolean canMove = false;
-						while(canMove == false){
+						
+						boolean canMove = true;
+						
 							read = null;
 							while(read == null || read.length <= 1){
 								ans = buff.readLine();
 								read = ans.split(",");
 							}
 							for(int j = 0; j < read.length; j++){//need to check if the length is equal to the roll or if they enter a room, also if there is a wall in the path;
+								if(canMove == false){
+									read = null;
+									while(read == null || read.length <= 1){
+										ans = buff.readLine();
+										read = ans.split(",");
+									}
+									j = 0;
+								}
 								String[] readC = read[j].split("=");//I guess this loop is just making sure the player enters a valid move... feel like it could be better
 								int tempI = Integer.parseInt(readC[1]);//works though
 								rollCond += tempI;
@@ -263,33 +282,31 @@ public class Board {
 									canMove = (canMove(temp,x, tempI,"y"));
 									//check if it can move north or south
 								}
-								if(rollCond != roll){
-									canMove = false;
-									break;
-								}
 							}
-						}
-						board[temp.y][temp.x] = temp.getPrevPos();
-						temp.setPrevPos(x+temp.x, y+temp.y, board[y+temp.y][x+temp.x]);
-						board[y + temp.y][x+temp.y] = temp.getPiece();
-						
-						//also need to check that rollCond is not less than roll
-						//move the player to the new position, might make a special case for when in a room.
+							BoardTile tempP =  board[y+temp.y][x+temp.x];
+							board[y+temp.y][x + temp.x] = temp.getPiece();
+							board[temp.y][temp.x] = temp.getPrevPos();
+							temp.setPrevPos(x+temp.x, y+temp.y,tempP);
+							System.out.println((temp.y + x) + " " + (temp.x + y));
+							
 
-						if(temp.getRoom() != null){
-							System.out.println("Make a guess.");
-							System.out.println("Hint: Make sure to spell everything correctly, with commas between each item");
-							ans = buff.readLine();
+							//also need to check that rollCond is not less than roll
+							//move the player to the new position, might make a special case for when in a room.
+
+							if(temp.getRoom() != null){
+								System.out.println("Make a guess.");
+								System.out.println("Hint: Make sure to spell everything correctly, with commas between each item");
+								ans = buff.readLine();
 							count = i + 1;
 							if(count == players.size()){
 								count = 0;
 							}
 							for(int j = count; j < players.get(j).getHand().size();j++){
 								if(temp.equals(players.get(j))){
-									System.out.println("Player: " + i + " wins the game!");
+									System.out.println("Player: " + players.get(i).playerNumber + " wins the game!");
 									i = players.size();
 									killerFound = true;
-									break;
+									return;
 								}
 								//iterate though all the players seeing if the can disprove
 							}
