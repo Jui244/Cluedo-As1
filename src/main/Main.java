@@ -2,6 +2,8 @@ package main;
 
 
 
+import java.io.IOException;
+
 import board.Board;
 /**
  * This is pretty much all I actually want this to do, as the
@@ -12,7 +14,7 @@ import board.Board;
  *
  */
 public class Main {
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		@SuppressWarnings("unused")
 		Board b = new Board();
 	}

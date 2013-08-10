@@ -8,9 +8,6 @@ package piece;
  */
 public abstract class GameObject {
 
-	public Room getLocation() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public abstract String print();
 
 }

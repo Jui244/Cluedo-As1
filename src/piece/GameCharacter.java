@@ -6,7 +6,7 @@ public class GameCharacter extends GameObject{
 	public GameCharacter(String name){
 		this.name = name;
 	}
-	public String getName() {
+	public String print() {
 		return name;
 	}
 

@@ -1,6 +1,7 @@
 package board;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -49,7 +50,7 @@ public class Board {
 
 	
 
-	public Board(){
+	public Board() throws IOException{
 		
 		rooms = new ArrayList<Room>(9);
 		weapons = new ArrayList<Weapon>(6);
@@ -73,12 +74,10 @@ public class Board {
 		characters.add(rGree);
 		characters.add(mPeac);
 		characters.add(pPlum);
-
-		deck.addAll(characters);
-		
-		Collections.shuffle(deck);
-		for(int i = 1; i < weapons.size(); i++)
-			deck.add(weapons.get(i));
+		Collections.shuffle(characters);
+		murderer = characters.get(0);
+		for(int i = 1; i < characters.size(); i++)
+			deck.add(characters.get(i));
 		
 		init();
 		
@@ -164,7 +163,7 @@ public class Board {
 
 		// Each room keeps track of the items in it. Just need to write a contains method or something :D
 		
-		BoardTile[][] board = {
+		BoardTile[][] initBoard = {
 				{ w, w, w, w, w, w, w, w, w,st, w, w, w,st, w, w, w, w, w, w, w, w, w},
 				{ w, r, r, r, r, w, w,hw,hw,hw, w, r, w,hw,hw,hw, w, w, r, r, r, r, w},
 				{ w, r, r, r, r, w,hw,hw, w, w, w, r, w, w, w,hw,hw, w, r, r, r, r, w},
@@ -191,7 +190,7 @@ public class Board {
 				{ w, w, w, w, w, w, w,st, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w}
 		};
 
-		this.board = board;
+		this.board = initBoard;
 		count = 0;
 		for(int i = 0; i < board.length; i++){
 			for(int j = 0; j < board[i].length;j++){
@@ -210,6 +209,45 @@ public class Board {
 		printBoard();
 		
 		while(!killerFound){
+			for(int i = 0; i < players.size();i++){
+				Player temp = players.get(i);
+				String[] read = null;
+				temp.printhand();
+				System.out.println("Would you like to make your final accusation? y/n");
+				BufferedReader buff = new BufferedReader(new InputStreamReader(System.in));
+				String ans = buff.readLine();
+				if(ans.equalsIgnoreCase("y")){
+					while(read == null || read.length<3){
+						System.out.println("Please enter your accusation. Weapon,Room,Character");
+						ans = buff.readLine();
+						read = ans.split(",");
+					}
+					//check if the accusations is true, otherwise remove the player from the game
+				}
+				else{
+					if(temp.getRoom()!=null && temp.getRoom().getPassage()!=null){
+						System.out.println("Would you like to move to: " + temp.getRoom().print() + ". y/n");
+						ans = buff.readLine();
+						if(ans.equalsIgnoreCase("y"))break;//move player to next room allow them to make a guess
+					}else{
+						int roll = 1 + (int)(Math.random() * ((6 - 1) + 1));
+						System.out.println("You rolled a " + roll + "!");
+						System.out.println("What co-or would you like to move to? x,y");
+						ans = buff.readLine();
+						read = ans.split(",");
+						int x = Integer.parseInt(read[0]);
+						int y = Integer.parseInt(read[1]);
+						//check if the player can reach the location
+						//move the player
+						if(temp.getRoom() != null){
+							System.out.println("Make a guess.");
+							ans = buff.readLine();
+							//iterate though all the players seeing if the can disprove
+						}
+					}
+				}
+				printBoard();
+			}
 			//print out who ever's turn it is
 			//print players hand
 			//Ask if they want to make there final accusation
@@ -221,7 +259,6 @@ public class Board {
 			//iterate through the players, if the next player can prove that the accusation is wrong they must otherwise the next player must
 			//print board
 			//if everyone passes player wins.
-			break;
 		}
 	}
 
@@ -251,7 +288,7 @@ public class Board {
 			for(int i = 1; i < player + 1; i++){
 				System.out.println("Player: " + i + " please select a character from:");
 				for(GameCharacter c: characters){
-					System.out.printf("%s \n",c.getName());
+					System.out.printf("%s \n",c.print());
 				}
 				System.out.printf("-----------------------------------------\n");
 
@@ -261,7 +298,7 @@ public class Board {
 					playerChoice.trim();
 					for(int j = 0; j < characters.size(); j++){ 
 						GameCharacter c = characters.get(j);
-						if(c.getName().equalsIgnoreCase(playerChoice)){
+						if(c.print().equalsIgnoreCase(playerChoice)){
 							players.add(new Player(c, i));
 							characters.remove(j);
 							selected = true;

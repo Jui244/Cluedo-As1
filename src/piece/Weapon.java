@@ -15,7 +15,7 @@ public class Weapon extends GameObject{
 		this.name = name;
 
 	}
-	public String getName() {
+	public String print() {
 		return name;
 	}
 }

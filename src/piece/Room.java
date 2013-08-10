@@ -48,8 +48,11 @@ public class Room extends GameObject{
 	public Room getPassage(){
 		return hiddenPassage;
 	}
+	public void setPassage(Room r){
+		hiddenPassage = r;
+	}
 
-	public String getName(){
+	public String print(){
 		return name;
 	}
 }
