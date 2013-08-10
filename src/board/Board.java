@@ -31,43 +31,43 @@ import game.Player;
  *
  */
 public class Board {
-	
+
 	private ArrayList<Player> players;
 	private ArrayList<Room> rooms;
 	private ArrayList<Weapon> weapons;
 	private ArrayList<GameCharacter> characters;
 	private ArrayList<GameObject> deck;
-	
+
 	@SuppressWarnings("unused")
 	private Crime crime;
 	private GameCharacter murderer;
 	private Room murderRoom;
 	private Weapon murderWeapon;
-	
+
 	private BoardTile[][] board;
-	
+
 	private boolean killerFound = false;
 
-	
+
 
 	public Board() throws IOException{
-		
+
 		rooms = new ArrayList<Room>(9);
 		weapons = new ArrayList<Weapon>(6);
 		characters = new ArrayList<GameCharacter>(6);
 		deck = new ArrayList<GameObject>();
 		players = new ArrayList<Player>(4);
-		
+
 		//Only place a player can move on is the 'hallway' or an 'entrance'
 		//change null to a set of starting items in each room.
-		
+
 		GameCharacter mScar = new GameCharacter("Miss Scarlett");
 		GameCharacter cMust = new GameCharacter("Colonel Mustard");
 		GameCharacter mWhit = new GameCharacter("Mrs White");
 		GameCharacter rGree = new GameCharacter("Reverent Green");
 		GameCharacter mPeac = new GameCharacter("Mrs Peacock");
 		GameCharacter pPlum = new GameCharacter("Professor Plum");
-		
+
 		characters.add(mScar);
 		characters.add(cMust);
 		characters.add(mWhit);
@@ -78,32 +78,32 @@ public class Board {
 		murderer = characters.get(0);
 		for(int i = 1; i < characters.size(); i++)
 			deck.add(characters.get(i));
-		
+
 		init();
-		
+
 		for(Player p: players){
 			System.out.println(p.getCharacter());
 		}
-		
+
 		Weapon candleStick = new Weapon("Candle Stick");
 		Weapon dagger = new Weapon("Dagger");
 		Weapon leadPipe = new Weapon("Lead Pipe");
 		Weapon revolver = new Weapon("Revolver");
 		Weapon rope = new Weapon("Rope");
 		Weapon spanner = new Weapon("Spanner");
-		
+
 		weapons.add(candleStick);
 		weapons.add(dagger);
 		weapons.add(leadPipe);
 		weapons.add(revolver);
 		weapons.add(rope);
 		weapons.add(spanner);
-		
+
 		Collections.shuffle(weapons);
 		murderWeapon = weapons.get(0);
 		for(int i = 1; i < weapons.size(); i++)
 			deck.add(weapons.get(i));
-		
+
 		Room kitchen = new Room("Kitchen");
 		kitchen.addWeapon(weapons.get(0));
 		Room diningRoom = new Room("Kitchen");
@@ -129,12 +129,12 @@ public class Board {
 		rooms.add(library);
 		rooms.add(study);
 		rooms.add(hall);
-	
+
 		Collections.shuffle(rooms);
 		murderRoom = rooms.get(0);
 		for(int i = 1; i < rooms.size(); i++)
 			deck.add(rooms.get(i));
-		
+
 		Collections.shuffle(deck);
 		//Initializes each players hand
 		int count = 0;
@@ -144,9 +144,9 @@ public class Board {
 			players.get(count).addToHand(deck.get(i));
 			count++;
 		}
-		
+
 		crime = new Crime(murderWeapon, murderRoom, murderer);
-		
+
 		BoardTile k = new BoardTile("K", kitchen); //Kitchen
 		BoardTile dr = new BoardTile("D", diningRoom); //DiningRoom
 		BoardTile l = new BoardTile("l", lounge); //Lounge
@@ -162,7 +162,7 @@ public class Board {
 		BoardTile st = new BoardTile("S", null); //Start Point, spawn point
 
 		// Each room keeps track of the items in it. Just need to write a contains method or something :D
-		
+
 		BoardTile[][] initBoard = {
 				{ w, w, w, w, w, w, w, w, w,st, w, w, w,st, w, w, w, w, w, w, w, w, w},
 				{ w, r, r, r, r, w, w,hw,hw,hw, w, r, w,hw,hw,hw, w, w, r, r, r, r, w},
@@ -189,7 +189,7 @@ public class Board {
 				{ w, r ,r, r, r, r, w,hw,hw, w, r, r, r, r, w,hw,hw, w, r, r, r, r, w},
 				{ w, w, w, w, w, w, w,st, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w}
 		};
-
+		//Puts the players into there starting locations
 		this.board = initBoard;
 		count = 0;
 		for(int i = 0; i < board.length; i++){
@@ -205,9 +205,11 @@ public class Board {
 			if(count == players.size())
 				break;
 		}
-		
+
 		printBoard();
-		
+		/*
+		 * If I can be bothered later, I'll start fixing the exceptions this will throw if the user enters bad input.. not sure how important that is for this assignment.
+		 */
 		while(!killerFound){
 			for(int i = 0; i < players.size();i++){
 				Player temp = players.get(i);
@@ -234,25 +236,56 @@ public class Board {
 						System.out.println("You rolled a " + roll + "!");
 						System.out.println("What co-or would you like to move to?");
 						System.out.println("Hint: Enter how many units you would like to move horizontal by 'x=*' and how many verticle by 'y=*', you can have multiple" +
-								"\n of these if you wish to have a more complex move.\nExample input x=2,y=3 to move east 2 and north 3 or y=-2,x=3 to move south 2 and east 3.");
+								"\nof these if you wish to have a more complex move.\nExample input x=2,y=3 to move east 2 and north 3 or y=-2,x=3 to move south 2 and east 3.");
 						read = null;
 						while(read == null || read.length <= 1){
 							ans = buff.readLine();
 							read = ans.split(",");
 						}
+						
+						int rollCond = 0;
+						int x = temp.x;
+						int y = temp.y;
 						for(int j = 0; j < read.length; j++){//need to check if the length is equal to the roll or if they enter a room, also if there is a wall in the path;
-							if(read[j].startsWith("x=")){
-								
+							String[] readC = read[j].split("=");//I guess this loop is just making sure the player enters a valid move... feel like it could be better
+							int tempI = Integer.parseInt(readC[1]);//works though
+							rollCond += tempI;
+							if(readC[0].equalsIgnoreCase("x")){	
+								x += tempI;
+								System.out.println(canMove(temp,tempI,0));
+								//check if it can move west or east
 							}
-							if(read[j].startsWith("y=")){
-								
+							if(readC[0].equalsIgnoreCase("y")){
+								y+=tempI;
+								System.out.println(canMove(temp,0, tempI));
+								//check if it can move north or south
 							}
+							if(rollCond > roll){
+								break;
+							}
+							//if it reaches the end we know that it's equal to the roll and that there where no walls in the way.
 						}
+						//also need to check that rollCond is not less than roll
 						//move the player to the new position, might make a special case for when in a room.
+
 						if(temp.getRoom() != null){
 							System.out.println("Make a guess.");
+							System.out.println("Hint: Make sure to spell everything correctly, with commas between each item");
 							ans = buff.readLine();
-							//iterate though all the players seeing if the can disprove
+							count = i + 1;
+							if(count == players.size()){
+								count = 0;
+							}
+							for(int j = count; j < players.get(j).getHand().size();j++){
+								if(temp.equals(players.get(j))){
+									System.out.println("Player: " + i + " wins the game!");
+									i = players.size();
+									killerFound = true;
+									break;
+								}
+								//iterate though all the players seeing if the can disprove
+							}
+
 						}
 					}
 				}
@@ -271,8 +304,47 @@ public class Board {
 			//if everyone passes player wins.
 		}
 	}
+	/**
+	 * returns true if there are no walls between the two positions and the the move is within the bounds of the board.
+	 * @param p
+	 * @param x
+	 * @param y
+	 * @return
+	 */
+	public boolean canMove(Player p, int x, int y){
+		int tempS = 0;
+		int tempE = 0;
 
-
+		if(x == 0){
+			if(y > 0){
+				tempS = p.y; 
+				tempE = p.y+y;
+				}
+			else {
+				tempS = p.y + y;
+				tempE = p.y;
+			}
+			for(int i = tempS; i < tempE; i++){
+				if(board[p.x][i] == null || board[p.x][i].print().equalsIgnoreCase("W"))
+					return false;
+			}
+		} else {
+			if(x > 0){
+				tempS = p.x; 
+				tempE = p.x+x;
+				}
+			else {
+				tempS = p.x + x;
+				tempE = p.x;
+			}
+			for(int i = tempS; i < tempE; i++){
+				if(board[i][p.y] == null || board[i][p.y].print().equalsIgnoreCase("W"))
+					return false;
+			}
+		}
+		return true;
+		
+	}
 	public void printBoard(){
 		for(int i = 0; i < board.length; i++){
 			System.out.printf("%2d: ",i);
@@ -281,7 +353,7 @@ public class Board {
 			}
 			System.out.println();
 		}
-		
+
 		System.out.println("    ¨ ¨ ¨ ¨ ¨ ¨ ¨ ¨ ¨ ¨ ¨ ¨ ¨ ¨ ¨ ¨ ¨ ¨ ¨ ¨ ¨ ¨ ¨");
 		System.out.println("    1 2 3 4 5 6 7 8 9 1 1 1 1 1 1 1 1 1 1 2 2 2 2");
 		System.out.println("                      0 1 2 3 4 5 6 7 8 9 0 1 2 3");
@@ -324,9 +396,9 @@ public class Board {
 
 	/**
 	 * reserved for the combination of room/weapon/killer, needs to be guessed to win.
- * @author Potato
- *
- */
+	 * @author Potato
+	 *
+	 */
 	private class Crime{
 		public final Weapon w;
 		public final Room r;
@@ -343,6 +415,6 @@ public class Board {
 			}
 			return false;
 		}
-		
+
 	}
 }

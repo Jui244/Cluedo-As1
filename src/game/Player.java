@@ -49,6 +49,8 @@ public class Player {
 		hand.add(o);
 	}
 	public void setPrevPos(int x, int y, BoardTile b){
+		this.x = x;
+		this.y = y;
 		prev = b;
 	}
 	public BoardTile getPrevPos(){

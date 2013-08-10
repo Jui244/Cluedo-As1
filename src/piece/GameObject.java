@@ -7,7 +7,5 @@ package piece;
  *
  */
 public abstract class GameObject {
-
 	public abstract String print();
-
 }
