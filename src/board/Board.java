@@ -290,9 +290,6 @@ public class Board {
 									//check if it can move north or south
 								}
 							}
-							if(rollCond<roll && board[y+temp.y][x+temp.x].getRoom()!=null){
-								break;
-							} else canMove = false;
 						}
 						
 						BoardTile tempP =  board[y+temp.y][x+temp.x];
