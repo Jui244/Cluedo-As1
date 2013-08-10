@@ -15,14 +15,20 @@ import piece.GameObject;
  */
 public class Player {
 	private GameCharacter c;
-	private int playerNumber;
 
+	public int x;
+	public int y;
+	public final int playerNumber;
+	private BoardTile prev;
 	private BoardTile piece;
 	
 	private ArrayList<GameObject> hand;
 	
 	public Player(GameCharacter c, int playerNumber) {
 		this.c = c;
+		this.playerNumber = playerNumber;
+		piece = new BoardTile(String.valueOf(playerNumber), null);
+		hand = new ArrayList<GameObject>();
 	}
 	public String getCharacter() {
 		return c.getName();
@@ -36,4 +42,14 @@ public class Player {
 	public ArrayList<GameObject> getHand(){
 		return hand;
 	}
+	public void addToHand(GameObject o){
+		hand.add(o);
+	}
+	public void setPrevPos(int x, int y, BoardTile b){
+		prev = b;
+	}
+	public BoardTile getPrevPos(){
+		return prev;
+	}
+	
 }

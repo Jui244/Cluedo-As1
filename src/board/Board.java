@@ -45,6 +45,8 @@ public class Board {
 	
 	@SuppressWarnings("unused")
 	private BoardTile[][] board;
+	
+	private boolean killerFound = false;
 
 	
 
@@ -76,8 +78,8 @@ public class Board {
 		deck.addAll(characters);
 		
 		Collections.shuffle(deck);
-		murderer = (GameCharacter) deck.get(0);
-		deck.remove(0);
+		for(int i = 1; i < weapons.size(); i++)
+			deck.add(weapons.get(i));
 		
 		init();
 		
@@ -101,8 +103,8 @@ public class Board {
 		
 		Collections.shuffle(weapons);
 		murderWeapon = weapons.get(0);
-		weapons.remove(0);
-		deck.addAll(weapons);
+		for(int i = 1; i < weapons.size(); i++)
+			deck.add(weapons.get(i));
 		
 		Room kitchen = new Room("Kitchen");
 		kitchen.addWeapon(weapons.get(0));
@@ -132,8 +134,18 @@ public class Board {
 	
 		Collections.shuffle(rooms);
 		murderRoom = rooms.get(0);
-		rooms.remove(0);
-		deck.addAll(rooms);
+		for(int i = 1; i < rooms.size(); i++)
+			deck.add(rooms.get(i));
+		
+		Collections.shuffle(deck);
+		//Initializes each players hand
+		int count = 0;
+		for(int i = 0; i < deck.size();i++){
+			if(count == players.size())
+				count = 0;
+			players.get(count).addToHand(deck.get(i));
+			count++;
+		}
 		
 		crime = new Crime(murderWeapon, murderRoom, murderer);
 		
@@ -178,31 +190,65 @@ public class Board {
 				{ w, r ,r, r, r, r, w,hw,hw, w, r, r, r, r, w,hw,hw, w, r, r, r, r, w},
 				{ w, r ,r, r, r, r, w,hw,hw, w, r, r, r, r, w,hw,hw, w, r, r, r, r, w},
 				{ w, w, w, w, w, w, w,st, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w}
-				};
-		
+		};
+
 		this.board = board;
+		count = 0;
+		for(int i = 0; i < board.length; i++){
+			for(int j = 0; j < board[i].length;j++){
+				if(board[i][j].equals(st)){
+					players.get(count).setPrevPos(i, j, board[i][j]);
+					board[i][j] = players.get(count).getPiece();
+					count++;
+				}
+				if(count == players.size())
+					break;
+			}
+			if(count == players.size())
+				break;
+		}
 		
-for(int i = 0; i < board.length; i++){
-	for(int j = 0; j < board[i].length; j++){
-		System.out.printf("%s ",board[i][j].print());
+		printBoard();
+		
+		while(!killerFound){
+			//print out who ever's turn it is
+			//print players hand
+			//Ask if they want to make there final accusation
+			//check if they're in a room with a passageway
+			//if so ask if they would like to go to other room.
+			//roll dice and ask for co-or. Use a* to check if they can reach it otherwise re ask for input.
+			//if they enter a room allow them to make a guess
+			//guess must use the same room the player is in. move the player accused and the weapon to the room the players in.
+			//iterate through the players, if the next player can prove that the accusation is wrong they must otherwise the next player must
+			//print board
+			//if everyone passes player wins.
+			break;
+		}
 	}
-	System.out.println();
-}
 
-		//add rooms to deck
-		//add characters to deck
-		//shuffle deck
-
+	public void printBoard(){
+		for(int i = 0; i < board.length; i++){
+			System.out.printf("%2d: ",i);
+			for(int j = 0; j < board[i].length; j++){
+				System.out.printf("%s ",board[i][j].print());
+			}
+			System.out.println();
+		}
+		
+		System.out.println("    ¨ ¨ ¨ ¨ ¨ ¨ ¨ ¨ ¨ ¨ ¨ ¨ ¨ ¨ ¨ ¨ ¨ ¨ ¨ ¨ ¨ ¨ ¨");
+		System.out.println("    1 2 3 4 5 6 7 8 9 1 1 1 1 1 1 1 1 1 1 2 2 2 2");
+		System.out.println("                      0 1 2 3 4 5 6 7 8 9 0 1 2 3");
 	}
-	
+
 	public void init(){
 		System.out.println("Welcome to Cluedo!");
 		System.out.println("Please enter the number of players, it must be between 2 and 4.");
-
+		int player = 0;
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		boolean selected;
 		try {
-			int player = Integer.parseInt(br.readLine());
+			while(player < 2)
+				player = Integer.parseInt(br.readLine());
 			for(int i = 1; i < player + 1; i++){
 				System.out.println("Player: " + i + " please select a character from:");
 				for(GameCharacter c: characters){
