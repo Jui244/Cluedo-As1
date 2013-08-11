@@ -3,7 +3,7 @@ package piece;
 /**
  * Probably going to need to add a few more things in here as time
  * go's on.
- * @author Potato
+ * @author Jui Deshpande
  *
  */
 public class Weapon extends GameObject{

@@ -3,7 +3,7 @@ package piece;
 /**
  * Class for a game character, the x and y are the starting position for the character and the name
  * is mainly used when making comparisons
- * @author Scott
+ * @author Jui Deshpande
  *
  */
 public class GameCharacter extends GameObject{

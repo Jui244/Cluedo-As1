@@ -8,7 +8,7 @@ package piece;
  * if it's worth having a contains method for this, just sort of assuming
  * that if they reach the 2 block entrance way they can move anywhere
  * in the room.
- * @author Potato
+ * @author Jui Deshpande
  *
  */
 public class Room extends GameObject{

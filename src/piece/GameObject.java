@@ -2,8 +2,8 @@ package piece;
 
 
 /**
- * yeah.. think you can figure this one out :P
- * @author Potato
+ * Methods I need in each class which extends it.
+ * @author Scott Allen
  *
  */
 public abstract class GameObject {

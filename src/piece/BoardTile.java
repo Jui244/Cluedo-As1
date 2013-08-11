@@ -3,7 +3,7 @@ package piece;
 
 /**
  * So a board tile can either be a Room, hallway or entrance.
- * @author Scott
+ * @author Jui Deshpande
  *
  */
 public class BoardTile extends GameObject{

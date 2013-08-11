@@ -12,7 +12,7 @@ import piece.Room;
  * The player, each player hold its piece on the board and the previous piece from there location, on movement they
  * place the piece back down and move there character to the new position.
  * each player also has a hand which is printed out on there turn.
- * @author Scott
+ * @author Scott Allen
  *
  */
 public class Player {
