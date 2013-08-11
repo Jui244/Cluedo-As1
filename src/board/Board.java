@@ -166,8 +166,8 @@ public class Board {
 		BoardTile h = new BoardTile("H", hall);
 		BoardTile hr = new BoardTile(" ", hall);
 
-		BoardTile w = new BoardTile("W", null); //Wall, check if the position is a wall if it is don't move through it... duh.
-		BoardTile hw = new BoardTile(" ", null); //Hall Way, the best kind of way
+		BoardTile w = new BoardTile("W", null); 
+		BoardTile hw = new BoardTile(" ", null); 
 
 		BoardTile[][] initBoard = {
 				{ w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w},
@@ -248,6 +248,8 @@ public class Board {
 				}
 				else{
 					ans = null;
+					if(temp.getPrevPos().getRoom()!=null)
+					System.out.println(temp.getPrevPos().getRoom().toString());
 					if(temp.getPrevPos().getRoom()!=null && temp.getPrevPos().getRoom().getPassage()!=null){
 						System.out.println("Would you like to move to: " + temp.getPrevPos().getRoom().getPassage().toString() + ". y/n");
 						ans = br.readLine();
@@ -301,11 +303,11 @@ public class Board {
 							ans = br.readLine();
 							read = ans.split(",");
 						}
-						while(rollCond!=roll){
+						while(rollCond!=roll && canMove != null){
 							for(int j = 0; j < read.length; j++){//need to check if the length is equal to the roll or if they enter a room, also if there is a wall in the path;
 								if(canMove == null){
 									read = null;
-									canMove = temp.getPiece();
+									//canMove = temp.getPiece();
 									while(read == null || read.length <= 1){
 										ans = br.readLine();
 										read = ans.split(",");
@@ -316,7 +318,7 @@ public class Board {
 									j = 0;
 								}
 								String[] readC = read[j].split("=");//I guess this loop is just making sure the player enters a valid move... feel like it could be better
-								int tempI = Integer.parseInt(readC[1]);//works though
+								int tempI = Integer.parseInt(readC[1]);//no longer works
 								rollCond += Math.abs(tempI);
 								if(readC[0].equalsIgnoreCase("x")){	
 									x += tempI;
@@ -329,7 +331,6 @@ public class Board {
 									//check if it can move north or south
 								}
 								if(canMove!=null && canMove.getRoom()!=null){
-									System.out.println("Is this reached");
 									rollCond=roll;
 									break;
 								}
@@ -410,7 +411,7 @@ public class Board {
 			
 				if(j == count-1)
 					break;
-				if(j == players.size()-1)
+				if(j == players.size()-1 && players.size()>2)
 					j = 0;
 			 
 		}
@@ -447,7 +448,7 @@ public class Board {
 		return crime.accusation(w, r, c);
 	}
 
-	//need to change this to support hitting an entrance
+	//bug here
 
 	public BoardTile canMove(Player p, int x, int y, String s){
 		int tempS = 0;
@@ -465,10 +466,10 @@ public class Board {
 				if(board[i][p.x+x].getRoom()!=null){
 					return board[i][p.x+x];
 				}
-				if(board[i][p.x+x].compare("W"))
+				if(board[i][p.x+x].toString().equalsIgnoreCase("W"))
 					return null;
 			}
-			return(board[tempE-1][p.x+x]);
+			return(board[Math.max(tempE, tempS)][p.x+x]);
 		} else {
 			if(x < 0){
 				tempS = p.x+x; 
@@ -481,10 +482,10 @@ public class Board {
 			for(int i = tempS; i < tempE; i++){
 				if(board[p.y+y][i].getRoom()!=null)
 					return board[p.y+y][i];
-				if(board[p.y+y][i].compare("W"))
+				if(board[i][p.x+x].toString().equalsIgnoreCase("W"))
 					return null;
 			}
-			return(board[p.y+y][tempE-1]);
+			return(board[p.y+y][Math.max(tempE, tempS)]);
 		}
 	}
 
