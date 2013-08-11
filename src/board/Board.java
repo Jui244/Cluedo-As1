@@ -394,7 +394,7 @@ public class Board {
 		if(getPlayer(read[1])!=null){
 			String[] temp = rt.doors[0].split(",");
 			switchPos(Integer.parseInt(temp[0]), Integer.parseInt(temp[1]), getPlayer(read[1]));
-
+			printBoard();
 			for (Weapon w: weapons){
 				if(w.compare(read[0])){
 					w.r = rt;
@@ -407,12 +407,12 @@ public class Board {
 				o = found(players.get(j).getHand(), read);
 				break;
 			}
-			/*
+			
 				if(j == count-1)
 					break;
 				if(j == players.size()-1)
 					j = 0;
-			 */
+			 
 		}
 
 		return o;
