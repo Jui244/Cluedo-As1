@@ -14,7 +14,9 @@ import piece.GameCharacter;
 
 import game.Player;
 /**
- * This is the class where 
+ * This is the class where the bulk of the game is handled
+ * first a board is constructed and everything is intialized.
+ * from there the constructor calls the gameloop which plays out the game
  * @author Scott Allen
  *
  */
