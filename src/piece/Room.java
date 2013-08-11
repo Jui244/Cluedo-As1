@@ -1,8 +1,5 @@
 package piece;
 
-import java.util.HashSet;
-
-import game.Player;
 /**
  * So each room can store a number of players and weapons,
  * A room has a name, a set of weapons and, a set of players
@@ -18,11 +15,12 @@ public class Room extends GameObject{
 	
 	private Room hiddenPassage;
 	private String name;
+	public final String[] doors;
 	
-	public Room(String name){
+	public Room(String name, String[] doors){
 		this.name = name;
+		this.doors = doors;
 	}
-
 	public Room getPassage(){
 		return hiddenPassage;
 	}
@@ -32,7 +30,13 @@ public class Room extends GameObject{
 	public String toString(){
 		return name;
 	}
-
+	public String[] getDoors(){
+		return doors;
+	}
+	public void printDoors(){
+		for(int i = 0; i < doors.length; i++)
+			System.out.println(doors[i]);
+	}
 	@Override
 	public boolean compare(String s) {
 		if(s.equalsIgnoreCase(name))

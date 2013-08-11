@@ -107,17 +107,25 @@ public class Board {
 		for(int i = 1; i < weapons.size(); i++)
 			deck.add(weapons.get(i));
 		
-
-		Room kitchen = new Room("Kitchen");
-		Room diningRoom = new Room("Dining Room");
-		Room guestHouse = new Room("Guest House");
-		Room patio = new Room("Patio");
-		Room spa = new Room("Spa");
-		Room theater = new Room("Theater");
-		Room livingRoom = new Room("Living Room");
-		Room observatory = new Room("Observatory");
-		Room hall = new Room("Hall");
-		Room clue = new Room("Clue");
+		String[] ka = {"5,23"};
+		Room kitchen = new Room("Kitchen", ka);
+		String[] da = {"11,20", "14,22"};
+		Room diningRoom = new Room("Dining Room",da);
+		String[] ga = {"19,21"};
+		Room guestHouse = new Room("Guest House",ga);
+		String[] pa = {"7,14", "7,15", "7,16"};
+		Room patio = new Room("Patio", pa);
+		String[] sa = {"5,5"};
+		Room spa = new Room("Spa",sa);
+		String[] ta = {"10,7"};
+		Room theater = new Room("Theater", ta);
+		String[] la = {"16,9"};
+		Room livingRoom = new Room("Living Room", la);
+		String[] oa = {"22,9"};
+		Room observatory = new Room("Observatory",oa);
+		Room hall = new Room("Hall", null);
+		String[] ca = {"14,12", "9,17", "17,17"};
+		Room clue = new Room("Clue", ca);
 		
 		observatory.setPassage(kitchen);
 		kitchen.setPassage(observatory);
@@ -177,7 +185,6 @@ public class Board {
 		BoardTile lr = new BoardTile(" ", livingRoom);
 		BoardTile o = new BoardTile("O", observatory);
 		BoardTile or = new BoardTile(" ", observatory);
-		
 		BoardTile c = new BoardTile("C", clue);
 		BoardTile cr = new BoardTile(" ", clue);
 		
@@ -250,7 +257,7 @@ public class Board {
 				String[] read = null;
 				
 				temp.printhand();
-				
+				System.out.println("Player: " + temp.playerNumber + " turn.");
 				System.out.println("Would you like to make your final accusation? y/n");
 				
 				String ans = br.readLine();
@@ -274,13 +281,19 @@ public class Board {
 						break;
 					}
 					//Happy with this.
-			
+
 				}
 				else{
-					if(temp.getRoom()!=null && temp.getRoom().getPassage()!=null){
-						System.out.println("Would you like to move to: " + temp.getRoom().getPassage().toString() + ". y/n");
+					ans = null;
+
+					if(temp.getPrevPos() !=null && temp.getPrevPos().getRoom()!=null && temp.getPrevPos().getRoom().getPassage()!=null){
+						System.out.println("Would you like to move to: " + temp.getPrevPos().getRoom().getPassage().toString() + ". y/n");
 						ans = br.readLine();
 						if(ans.equalsIgnoreCase("y")){
+							Room r = temp.getPrevPos().getRoom().getPassage();
+							String[] newPos = r.doors[0].split(",");
+							switchPos(Integer.parseInt(newPos[0]), Integer.parseInt(newPos[1]), temp);
+							printBoard();
 							GameObject o = makeAttempt(ans, read, i);
 							if(o!=null){
 								System.out.println("Dispproved: " + o.toString());
@@ -289,13 +302,15 @@ public class Board {
 								return;
 							}	
 						}
-					}else{
+					}else if(ans == null || ans.equalsIgnoreCase("n")){
 						int roll = 1 + (int)(Math.random() * ((6 - 1) + 1));
 						System.out.println("You rolled a " + roll + "!");
 						System.out.println("What co-or would you like to move to?");
 						System.out.println("Hint: Enter how many units you would like to move horizontal by 'x=*' and how many verticle by 'y=*', you can have multiple" +
 								"\nof these if you wish to have a more complex move.\nExample input x=2,y=3 to move east 2 and south 3 or y=-2,x=3 to move north 2 and east 3.");
-
+						if(temp.getRoom()!= null){
+							
+						}
 						int rollCond = 0;
 						int x = 0;
 						int y = 0;
@@ -303,7 +318,6 @@ public class Board {
 						BoardTile canMove = temp.getPiece();
 
 						read = null;
-						boolean sorry = false;
 						//need to rewrite this to handle movement in rooms
 						
 						while(read == null || read.length <= 1){
@@ -342,10 +356,8 @@ public class Board {
 								if(canMove!=null && canMove.getRoom()!=null){
 									System.out.println("Is this reached");
 									rollCond=roll;
-									sorry = true;
 									break;
 								}
-								System.out.println(sorry);
 							}
 						}
 
@@ -405,11 +417,12 @@ public class Board {
 			if(found(players.get(j).getHand(), read)!=null){
 				o = found(players.get(j).getHand(), read);
 				break;
-			}
+			}/*
+			if(j == count-1)
+				break;
 			if(j == players.size()-1)
 				j = 0;
-			if(j == count -1)
-				break;
+				*/
 		}
 		return o;
 	}
@@ -422,7 +435,7 @@ public class Board {
 				return o;
 			}
 		}
-		return null;
+		return new Weapon("ficking something");
 	}
 
 	public boolean makeAccusation(String[] s){
