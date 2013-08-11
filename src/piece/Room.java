@@ -17,40 +17,26 @@ import game.Player;
 public class Room extends GameObject{
 	
 	private Room hiddenPassage;
-	private HashSet<Weapon> contains;
-	private HashSet<Player> players;
 	private String name;
 	
 	public Room(String name){
-		this.players = new HashSet<Player>();
-		contains = new HashSet<Weapon>();
 		this.name = name;
 	}
-	public HashSet<Player> getPlayers(){
-		return players;
-	}
-	public boolean removePlayer(Player p){
-		return players.remove(p);
-	}
-	public boolean containsPlayer(Player p){
-		return players.contains(p);
-	}
-	public void addWeapon(Weapon w){
-		contains.add(w);
-	}
-	public boolean removeWeapon(Weapon w){
-		return contains.remove(w);
-	}
-	public boolean containsWeapon(Weapon w){
-		return contains.contains(w);
-	}
+
 	public Room getPassage(){
 		return hiddenPassage;
 	}
 	public void setPassage(Room r){
 		hiddenPassage = r;
 	}
-	public String print(){
+	public String toString(){
 		return name;
+	}
+
+	@Override
+	public boolean compare(String s) {
+		if(s.equalsIgnoreCase(name))
+			return true;
+		return false;
 	}
 }

@@ -26,7 +26,6 @@ import game.Player;
  * out which room it'study trying to get into... somehow.
  * 
  * 
- * How could you ever think I would play Digimon.. I'm quite offended.
  * @author Potato
  *
  */
@@ -38,22 +37,20 @@ public class Board {
 	private ArrayList<GameCharacter> characters;
 	private ArrayList<GameObject> deck;
 
-	@SuppressWarnings("unused")
 	private Crime crime;
-	private GameCharacter murderer;
-	private Room murderRoom;
-	private Weapon murderWeapon;
 
 	private BoardTile[][] board;
 
 	private boolean killerFound = false;
+	
+	private BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
 
 
 	public Board() throws IOException{
 
 		rooms = new ArrayList<Room>(9);
-		weapons = new ArrayList<Weapon>(6);
+		weapons = new ArrayList<Weapon>(9);
 		characters = new ArrayList<GameCharacter>(6);
 		deck = new ArrayList<GameObject>();
 		players = new ArrayList<Player>(4);
@@ -61,12 +58,13 @@ public class Board {
 		//Only place a player can move on is the 'hallway' or an 'entrance'
 		//change null to a set of starting items in each room.
 
-		GameCharacter mScar = new GameCharacter("Miss Scarlett");
-		GameCharacter cMust = new GameCharacter("Colonel Mustard");
-		GameCharacter mWhit = new GameCharacter("Mrs White");
-		GameCharacter rGree = new GameCharacter("Reverent Green");
-		GameCharacter mPeac = new GameCharacter("Mrs Peacock");
-		GameCharacter pPlum = new GameCharacter("Professor Plum");
+
+		GameCharacter mScar = new GameCharacter("Miss Scarlett", 17, 29);
+		GameCharacter cMust = new GameCharacter("Colonel Mustard", 7, 29);
+		GameCharacter mWhit = new GameCharacter("Mrs White", 1, 21);
+		GameCharacter rGree = new GameCharacter("Reverent Green", 1, 10);
+		GameCharacter mPeac = new GameCharacter("Mrs Peacock", 6, 1);
+		GameCharacter pPlum = new GameCharacter("Professor Plum", 20, 1);
 
 		characters.add(mScar);
 		characters.add(cMust);
@@ -74,8 +72,8 @@ public class Board {
 		characters.add(rGree);
 		characters.add(mPeac);
 		characters.add(pPlum);
+		
 		Collections.shuffle(characters);
-		murderer = characters.get(0);
 		for(int i = 1; i < characters.size(); i++)
 			deck.add(characters.get(i));
 
@@ -85,64 +83,71 @@ public class Board {
 			System.out.println(p.getCharacter());
 		}
 
+		Weapon knife = new Weapon("Knife");
 		Weapon candleStick = new Weapon("Candle Stick");
-		Weapon dagger = new Weapon("Dagger");
-		Weapon leadPipe = new Weapon("Lead Pipe");
-		Weapon revolver = new Weapon("Revolver");
+		Weapon pistol = new Weapon("Pistol");
+		Weapon poisen = new Weapon("Poisen");
+		Weapon trophy = new Weapon("Trophy");
 		Weapon rope = new Weapon("Rope");
-		Weapon spanner = new Weapon("Spanner");
+		Weapon bat = new Weapon("Bat");
+		Weapon ax = new Weapon("Ax");
+		Weapon dumbbell = new Weapon("Dumbbell");
 
+		weapons.add(knife);
 		weapons.add(candleStick);
-		weapons.add(dagger);
-		weapons.add(leadPipe);
-		weapons.add(revolver);
+		weapons.add(pistol);
+		weapons.add(poisen);
+		weapons.add(trophy);
 		weapons.add(rope);
-		weapons.add(spanner);
+		weapons.add(bat);
+		weapons.add(ax);
+		weapons.add(dumbbell);
 
 		Collections.shuffle(weapons);
-		murderWeapon = weapons.get(0);
 		for(int i = 1; i < weapons.size(); i++)
 			deck.add(weapons.get(i));
+		
 
 		Room kitchen = new Room("Kitchen");
-		kitchen.addWeapon(weapons.get(0));
-		Room diningRoom = new Room("Kitchen");
-		diningRoom.addWeapon(weapons.get(1));
-		Room lounge = new Room("Lounge");
-		lounge.addWeapon(weapons.get(2));
-		Room ballRoom = new Room("Ball Room");
-		ballRoom.addWeapon(weapons.get(3));
-		Room conservatory = new Room("Conservatory");
-		conservatory.addWeapon(weapons.get(4));
-		Room billiardRoom = new Room("Billiard Room");
-		billiardRoom.addWeapon(weapons.get(5));
-		Room library = new Room("Library");
-		Room study = new Room("Study");
+		Room diningRoom = new Room("Dining Room");
+		Room guestHouse = new Room("Guest House");
+		Room patio = new Room("Patio");
+		Room spa = new Room("Spa");
+		Room theater = new Room("Theater");
+		Room livingRoom = new Room("Living Room");
+		Room observatory = new Room("Observatory");
 		Room hall = new Room("Hall");
+		Room clue = new Room("Clue");
 		
-		kitchen.setPassage(study);
-		study.setPassage(kitchen);
-		conservatory.setPassage(lounge);
-		lounge.setPassage(conservatory);
+		observatory.setPassage(kitchen);
+		kitchen.setPassage(observatory);
+		guestHouse.setPassage(spa);
+		spa.setPassage(guestHouse);
 		
 		rooms.add(kitchen);
 		rooms.add(diningRoom);
-		rooms.add(lounge);
-		rooms.add(ballRoom);
-		rooms.add(conservatory);
-		rooms.add(billiardRoom);
-		rooms.add(library);
-		rooms.add(study);
+		rooms.add(guestHouse);
+		rooms.add(patio);
+		rooms.add(spa);
+		rooms.add(theater);
+		rooms.add(livingRoom);
+		rooms.add(observatory);
 		rooms.add(hall);
 
 		Collections.shuffle(rooms);
-		murderRoom = rooms.get(0);
 		for(int i = 1; i < rooms.size(); i++)
 			deck.add(rooms.get(i));
-
+		
+		
+		for(int i = 0; i < rooms.size(); i++){
+			weapons.get(i).r = rooms.get(i);
+		}
+		
 		Collections.shuffle(deck);
 		//Initializes each players hand
+		
 		int count = 0;
+		
 		for(int i = 0; i < deck.size();i++){
 			if(count == players.size())
 				count = 0;
@@ -150,108 +155,140 @@ public class Board {
 			count++;
 		}
 		
-		crime = new Crime(murderWeapon, murderRoom, murderer);
-
-		BoardTile k = new BoardTile("K", kitchen); //Kitchen
+		crime = new Crime(weapons.get(0), rooms.get(0), characters.get(0));
 		
-		BoardTile dr = new BoardTile("D", diningRoom); //DiningRoom
-		BoardTile l = new BoardTile("l", lounge); //Lounge
-		BoardTile br = new BoardTile("B", ballRoom); //BallRoom
-		BoardTile c = new BoardTile("C", conservatory); //Conservatory
-		BoardTile b = new BoardTile("b", billiardRoom); //BilliardRoom
-		BoardTile li = new BoardTile("L", library); //Library
-		BoardTile s = new BoardTile("S", study); //Study
-		BoardTile h = new BoardTile("H", hall); //Hall
+		deck.add(weapons.get(0));
+		deck.add(characters.get(0));
+		deck.add(rooms.get(0));
+
+		BoardTile k = new BoardTile("K", kitchen);
+		BoardTile kr = new BoardTile(" ", kitchen);
+		BoardTile d = new BoardTile("D", diningRoom);
+		BoardTile dr = new BoardTile(" ", diningRoom);
+		BoardTile g = new BoardTile("G", guestHouse);
+		BoardTile gr = new BoardTile(" ", guestHouse);
+		BoardTile p = new BoardTile("P", patio);
+		BoardTile pr = new BoardTile(" ", patio);
+		BoardTile s = new BoardTile("S", spa);
+		BoardTile sr = new BoardTile(" ", spa);
+		BoardTile t = new BoardTile("T", theater);
+		BoardTile tr = new BoardTile(" ", theater);
+		BoardTile l = new BoardTile("L", livingRoom);
+		BoardTile lr = new BoardTile(" ", livingRoom);
+		BoardTile o = new BoardTile("O", observatory);
+		BoardTile or = new BoardTile(" ", observatory);
+		
+		BoardTile c = new BoardTile("C", clue);
+		BoardTile cr = new BoardTile(" ", clue);
+		
+		BoardTile h = new BoardTile("H", hall);
+		BoardTile hr = new BoardTile(" ", hall);
 
 		BoardTile w = new BoardTile("W", null); //Wall, check if the position is a wall if it is don't move through it... duh.
 		BoardTile hw = new BoardTile(" ", null); //Hall Way, the best kind of way
-		BoardTile st = new BoardTile("S", null); //Start Point, spawn point
 
-		// Each room keeps track of the items in it. Just need to write a contains method or something :D
+		// item keeps track of the rooms it's in.
 
 		BoardTile[][] initBoard = {
-				{ w, w, w, w, w, w, w, w, w,st, w, w, w,st, w, w, w, w, w, w, w, w, w},
-				{ w, k, k, k, k, w, w,hw,hw,hw, w,br, w,hw,hw,hw, w, w, c, c, c, c, w},
-				{ w, k, k, k, k, w,hw,hw, w, w, w,br, w, w, w,hw,hw, w, c, c, c, c, w},
-				{ w, k, k, k, k, w,hw,hw, w,br,br,br,br,br, w,hw,hw, c, c, c, c, c, w},
-				{ w, k, k, k, k, w,hw,hw,br,br,br,br,br,br,br,hw,hw,hw, w, w, w, w, w},
-				{ w, w, w, w, k, w,hw,hw, w,br,br,br,br,br, w,hw,hw,hw,hw,hw,hw,hw,st},
-				{ w,hw,hw,hw,hw,hw,hw,hw, w,br, w, w, w,br, w,hw,hw,hw,hw,hw,hw,hw, w},
-				{ w,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw, w, w, w, w, w, w},
-				{ w, w, w, w, w,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw, b, b, b, b, b, w},
-				{ w,dr,dr,dr, w, w, w, w,hw,hw, w, w, w, w,hw,hw,hw, w, b, b, b, b, w},
-				{ w,dr,dr,dr,dr,dr,dr, w,hw,hw, w, w, w, w,hw,hw,hw, w, b, b, b, b, w},
-				{ w,dr,dr,dr,dr,dr,dr,dr,hw,hw, w, w, w, w,hw,hw,hw, w, w, w, w, b, w},
-				{ w,dr,dr,dr,dr,dr,dr, w,hw,hw, w, w, w, w,hw,hw,hw,hw,hw,hw,hw,hw, w},
-				{ w,dr,dr,dr,dr,dr,dr, w,hw,hw, w, w, w, w,hw,hw,hw, w, w,li, w, w, w},
-				{ w, w, w, w, w, w,dr, w,hw,hw, w, w, w, w,hw,hw, w, w,li,li,li,li, w},
-				{ w,hw,hw,hw,hw,hw,hw,hw,hw,hw, w, w, w, w,hw,hw,li,li,li,li,li,li, w},
-				{st,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw, w, w, w,li,li,li, w},
-				{ w,hw,hw,hw,hw,hw,hw,hw,hw, w, w, h, h, w, w,hw,hw,hw, w, w, w, w, w},
-				{ w, w, w, w, w, w, w,hw,hw, w, h, h, h, h, w,hw,hw,hw,hw,hw,hw,hw,st},
-				{ w, l, l, l, l, l, l,hw,hw, w, h, h, h, h, h,hw,hw,hw,hw,hw,hw,hw, w},
-				{ w, l ,l, l, l, l, w,hw,hw, w, h, h, h, h, w,hw,hw, w, s, w, w, w, w},
-				{ w, l ,l, l, l, l, w,hw,hw, w, h, h, h, h, w,hw,hw, w, s, s, s, s, w},
-				{ w, l ,l, l, l, l, w,hw,hw, w, h, h, h, h, w,hw,hw, w, s, s, s, s, w},
-				{ w, w, w, w, w, w, w,st, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w}
+				{ w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w},
+				{ w,sr,sr,sr,sr, w,hw,hw, w,tr,tr,tr, w,hw, w,lr,lr,lr,lr, w,hw,hw, w,or, w},
+				{ w,sr,sr,sr,sr, w,hw,hw, w,tr,tr,tr, w,hw, w,lr,lr,lr,lr, w,hw,hw, w,or, w},
+				{ w,sr,sr,sr,sr, w,hw,hw, w,tr,tr,tr, w,hw, w,lr,lr,lr,lr, w,hw,hw, w,or, w},
+				{ w,sr,sr,sr,sr, w,hw,hw, w,tr,tr,tr, w,hw, w,lr,lr,lr,lr, w,hw,hw, w,or, w},
+				{ w,sr,sr,sr,sr, s,hw,hw, w,tr,tr,tr, w,hw, w,lr,lr,lr,lr, w,hw,hw, w,or, w},
+				{ w,sr,sr,sr, w,hw,hw,hw, w,tr,tr,tr, w,hw, w,lr,lr,lr,lr, w,hw,hw, w,or, w},
+				{ w, w, w, w, w,hw,hw,hw, w, w, t, w, w,hw, w,lr,lr,lr,lr, w,hw,hw, w,or, w},
+				{ w,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw, w, w,lr, w, w, w,hw,hw, w,or, w},
+				{ w,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw, w, l, w,hw,hw,hw,hw, o, w, w},
+				{ w,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw, w},
+				{ w, w, w, w, w,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw, w},
+				{ w,pr,pr,pr, w, w, w, w,hw, w, w, w, w, w, c, w, w, w,hw, w, w, w, h, w, w},
+				{ w,pr,pr,pr,pr,pr,pr, w,hw, w,cr,cr,cr,cr,cr,cr,cr, w,hw, w,hr,hr,hr,hr, w},
+				{ w,pr,pr,pr,pr,pr,pr, p,hw, w,cr,cr,cr,cr,cr,cr,cr, w,hw, h,hr,hr,hr,hr, w},
+				{ w,pr,pr,pr,pr,pr,pr, p,hw, w,cr,cr,cr,cr,cr,cr,cr, w,hw, h,hr,hr,hr,hr, w},
+				{ w,pr,pr,pr,pr,pr,pr, p,hw, w,cr,cr,cr,cr,cr,cr,cr, w,hw, w,hr,hr,hr,hr, w},
+				{ w,pr,pr,pr,pr,pr,pr, w,hw, c, w, w, w, w, w, w, w, c,hw, w,hr,hr,hr,hr, w},
+				{ w,pr,pr, w, w, w, w, w,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw, w, w, w, w, w, w},
+				{ w, w, w, w,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw,hw, w},
+				{ w,hw,hw,hw,hw,hw,hw,hw,hw, w, w, d, w, w, w,hw,hw,hw,hw,hw,hw,hw,hw,hw, w},
+				{ w,hw,hw,hw,hw,hw,hw,hw,hw, w,dr,dr,dr,dr, w,hw,hw,hw,hw, g, w, w, w, w, w},
+				{ w, w, w, w, w,hw,hw,hw,hw, w,dr,dr,dr,dr, d,hw,hw,hw,hw, w,gr,gr,gr,gr, w},
+				{ w,kr,kr,kr,kr, k,hw,hw,hw, w,dr,dr,dr,dr, w,hw,hw,hw,hw, w,gr,gr,gr,gr, w},
+				{ w,kr,kr,kr,kr, w,hw,hw, w,dr,dr,dr,dr,dr,dr, w,hw,hw,hw, w,gr,gr,gr,gr, w},
+				{ w,kr,kr,kr,kr, w,hw,hw, w,dr,dr,dr,dr,dr,dr, w,hw,hw,hw, w,gr,gr,gr,gr, w},
+				{ w,kr,kr,kr,kr, w,hw,hw, w,dr,dr,dr,dr,dr,dr, w,hw,hw,hw, w,gr,gr,gr,gr, w},
+				{ w,kr,kr,kr,kr, w,hw,hw, w,dr,dr,dr,dr,dr,dr, w,hw,hw,hw, w,gr,gr,gr,gr, w},
+				{ w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w}
+
 		};
 		//Puts the players into there starting locations
 		this.board = initBoard;
 		count = 0;
-		for(int i = 0; i < board.length; i++){
-			for(int j = 0; j < board[i].length;j++){
-				if(board[i][j].equals(st)){
-					players.get(count).setPrevPos(j, i, board[i][j]);
-					board[i][j] = players.get(count).getPiece();
-					count++;
-				}
-				if(count == players.size())
-					break;
-			}
-			if(count == players.size())
-				break;
+		for(Player pl:players){
+			int x = pl.getCharacter().x;
+			int y = pl.getCharacter().y;
+			pl.setPrevPos(x, y, board[y][x]);
+			board[y][x] = pl.getPiece();
 		}
 
 		printBoard();
+		gameLoop();
 		/*
 		 * If I can be bothered later, I'll start fixing the exceptions this will throw if the user enters bad input.. not sure how important that is for this assignment.
 		 */
+		
 
+	}
+	
+	
+	public void gameLoop() throws IOException{
 		while(!killerFound){
 			for(int i = 0; i < players.size();i++){
-				BufferedReader buff = new BufferedReader(new InputStreamReader(System.in));
-
+				
 				Player temp = players.get(i);
+				
 				String[] read = null;
+				
 				temp.printhand();
+				
 				System.out.println("Would you like to make your final accusation? y/n");
-				String ans = buff.readLine();
+				
+				String ans = br.readLine();
+				
 				if(ans.equalsIgnoreCase("y")){
 					while(read == null || read.length!=3){
 						System.out.println("Please enter your accusation. Weapon,Room,Character");
-						System.out.println(murderWeapon.print() + "," + murderRoom.print() + "," + murderer.print());
-						ans = buff.readLine();
+						ans = br.readLine();
 						read = ans.split(",");
 					}
 					if(makeAccu(read)){
 						System.out.println("Player: " + players.get(i).playerNumber + " wins the game!");
 						return;
 					} else {
-						i--;
+						
 						players.remove(i);
 						if(players.size() == 1){
 							System.out.println("Player: " + players.get(0).playerNumber + " wins the game!");
 							return;
 						}
+						break;
 					}
-					//check if the accusations is true, otherwise remove the player from the game
+					//Happy with this.
 			
 				}
 				else{
 					if(temp.getRoom()!=null && temp.getRoom().getPassage()!=null){
-						System.out.println("Would you like to move to: " + temp.getRoom().getPassage().print() + ". y/n");
-						ans = buff.readLine();
-						if(ans.equalsIgnoreCase("y"))break;//move player to next room allow them to make a guess
+						System.out.println("Would you like to move to: " + temp.getRoom().getPassage().toString() + ". y/n");
+						ans = br.readLine();
+						if(ans.equalsIgnoreCase("y")){
+							GameObject o = makeAttempt(ans, read, i);
+							if(o!=null){
+								System.out.println("Dispproved: " + o.toString());
+							}else{
+								System.out.println("Player: " + temp.playerNumber + " wins!");
+								return;
+							}	
+						}
 					}else{
 						int roll = 1 + (int)(Math.random() * ((6 - 1) + 1));
 						System.out.println("You rolled a " + roll + "!");
@@ -263,25 +300,30 @@ public class Board {
 						int x = 0;
 						int y = 0;
 
-						boolean canMove = true;
+						BoardTile canMove = temp.getPiece();
 
 						read = null;
+						
+						//need to rewrite this to handle movement in rooms
+						
 						while(read == null || read.length <= 1){
-							ans = buff.readLine();
+							ans = br.readLine();
 							read = ans.split(",");
 						}
+						
 						while(rollCond!=roll){
 							for(int j = 0; j < read.length; j++){//need to check if the length is equal to the roll or if they enter a room, also if there is a wall in the path;
-								canMove = true;
-								if(canMove == false){
+								
+								if(canMove == null){
 									read = null;
+									canMove = temp.getPiece();
 									while(read == null || read.length <= 1){
-										ans = buff.readLine();
+										ans = br.readLine();
 										read = ans.split(",");
 									}
-
 									j = 0;
 								}
+								
 								String[] readC = read[j].split("=");//I guess this loop is just making sure the player enters a valid move... feel like it could be better
 								int tempI = Integer.parseInt(readC[1]);//works though
 								rollCond += Math.abs(tempI);
@@ -295,90 +337,101 @@ public class Board {
 									canMove = (canMove(temp,x, tempI,"y"));
 									//check if it can move north or south
 								}
+								if(canMove!=null && canMove.getRoom()!=null){
+									System.out.println("Is this reached");
+									rollCond=roll;
+									break;
+								}
 							}
 						}
 
+						
 						BoardTile tempP =  board[y+temp.y][x+temp.x];
 						board[y+temp.y][x + temp.x] = temp.getPiece();
 						board[temp.y][temp.x] = temp.getPrevPos();
 						temp.setPrevPos(x+temp.x, y+temp.y,tempP);
 						System.out.println((temp.y + x) + " " + (temp.x + y));
 
-						//also need to check that rollCond is not less than roll
-						//move the player to the new position, might make a special case for when in a room.
-						//need to move this elsewhere
+
 						System.out.println(tempP.getRoom());
+
+						printBoard();
+
 						if(tempP.getRoom() != null){
-							System.out.println("Make a guess.");
-							System.out.println("Hint: Make sure to spell everything correctly, with commas between each item. Weapon,Character");
-							ans = buff.readLine();
-							read = ans.split(",");
-							count = i + 1;
-
-							if(count == players.size()){
-								count = 0;
-							}
-
-							for(int j = count; j < players.get(j).getHand().size();j++){
-								/*
-								if(temp.equals(players.get(j))){
-									System.out.println("Player: " + players.get(i).playerNumber + " wins the game!");
-									i = players.size();
-									killerFound = true;
-									return;
-								}
-								*/
-								if(found(players.get(i).getHand(), read)!=null){
-									System.out.println("Dispproved: " + found(players.get(i).getHand(), read).print());
-									break;
-								}
-								/*
-								if(j == players.size()-1)
-									j = 0;//the only way out of this loop should be buy winning or showing a card and breaking.
-								//iterate though all the players seeing if the can disprove
-								 * 
-								 */
-							}
-
+							//move player and weapon to room
+							GameObject o = makeAttempt(ans, read, i);
+							if(o!=null){
+								System.out.println("Dispproved: " + o.toString());
+							}else{
+								System.out.println("Player: " + temp.playerNumber + " wins!");
+								return;
+							}	
 						}
+
 					}
 				}
-				printBoard();
 			}
 		}
 	}
+	
+	public GameObject makeAttempt(String ans, String[] read, int i) throws IOException{
+		System.out.println("Make a guess.");
+		System.out.println("Hint: Make sure to spell everything correctly, with commas between each item. Weapon,Character");
+		ans = br.readLine();
+		read = ans.split(",");
+		int count = i + 1;
+
+		if(count == players.size()){
+			count = 0;
+		}
+		GameObject o = null;
+		for(int j = count; j < players.get(j).getHand().size();j++){
+			
+			if(found(players.get(j).getHand(), read)!=null){
+				o = found(players.get(j).getHand(), read);
+				break;
+			}
+			/*
+			if(j == players.size()-1)
+				j = 0;//the only way out of this loop should be buy winning or showing a card and breaking.
+			 */
+		}
+		return o;
+	}
+	
 	public GameObject found(ArrayList<GameObject>a, String[] sa){
+		//iterates through a players hand returning an object if it's found.
 		for (GameObject o : a){
 			for(int i = 0; i < sa.length;i++){
-			if(o.print().equalsIgnoreCase(sa[i]))
+			if(o.compare(sa[i]))
 				return o;
 			}
 		}
 		return null;
 	}
-	/*
-	 * returns true if there are no walls between the two positions and the the move is within the bounds of the board.
-	 */
+
 	public boolean makeAccu(String[] s){
-		Weapon we = null;
-		for(Weapon w: weapons){
-			if(w.print().equalsIgnoreCase(s[0]))
-				we = w;
+		
+		//will throw an exception if the user enters in the incorrect order
+		Weapon w = null;
+		Room r = null;
+		GameCharacter c = null;
+		
+		for(GameObject g: deck){
+			if(g.compare(s[0]))
+				w=(Weapon) g;
+			if(g.compare(s[1]))
+				r=(Room)g;
+			if(g.compare(s[2]))
+				c=(GameCharacter)g;
 		}
-		Room re = null;
-		for(Room r: rooms){
-			if(r.print().equalsIgnoreCase(s[1]))
-				re = r;
-		}
-		GameCharacter ce = null;
-		for(GameCharacter c: characters)
-			if(c.print().equalsIgnoreCase(s[2]))
-				ce = c;
-		return crime.accusation(we, re, ce);
+		return crime.accusation(w, r, c);
 		
 	}
 	
-	public boolean canMove(Player p, int x, int y, String s){
+	//need to change this to support hitting an entrance
+	
+	public BoardTile canMove(Player p, int x, int y, String s){
 		int tempS = 0;
 		int tempE = 0;
 		if(s.equals("y")){
@@ -391,11 +444,13 @@ public class Board {
 				tempE = p.y + y;
 			}
 			for(int i = tempS; i < tempE; i++){
-				System.out.println(p.x + " " + i);
-				if(board[i][p.x] == null || board[i][p.x+x].print().equalsIgnoreCase("W"))
-					return false;
-
+				if(board[i][p.x+x].getRoom()!=null){
+					return board[i][p.x+x];
+				}
+				if(board[i][p.x+x].compare("W"))
+					return null;
 			}
+			return(board[tempE-1][p.x+x]);
 		} else {
 			if(x < 0){
 				tempS = p.x+x; 
@@ -406,20 +461,21 @@ public class Board {
 				tempE = p.x+x;
 			}
 			for(int i = tempS; i < tempE; i++){
-				System.out.println(i + " " + p.y);
-				if(board[p.y][i] == null || board[p.y+y][i].print().equalsIgnoreCase("W"))
-					return false;
+				if(board[p.y+y][i].getRoom()!=null)
+					return board[p.y+y][i];
+				if(board[p.y+y][i].compare("W"))
+					return null;
 
 			}
+			return(board[p.y+y][tempE-1]);
 		}
-		return true;
-
 	}
+
 	public void printBoard(){
 		for(int i = 0; i < board.length; i++){
 			System.out.printf("%2d: ",i);
 			for(int j = 0; j < board[i].length; j++){
-				System.out.printf("%s ",board[i][j].print());
+				System.out.printf("%s ",board[i][j].toString());
 			}
 			System.out.println();
 		}
@@ -433,7 +489,7 @@ public class Board {
 		System.out.println("Welcome to Cluedo!");
 		System.out.println("Please enter the number of players, it must be between 2 and 4.");
 		int player = 0;
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		
 		boolean selected;
 		try {
 			while(player < 2)
@@ -441,7 +497,7 @@ public class Board {
 			for(int i = 1; i < player + 1; i++){
 				System.out.println("Player: " + i + " please select a character from:");
 				for(GameCharacter c: characters){
-					System.out.printf("%s \n",c.print());
+					System.out.printf("%s \n",c.toString());
 				}
 				System.out.printf("-----------------------------------------\n");
 
@@ -451,7 +507,7 @@ public class Board {
 					playerChoice.trim();
 					for(int j = 0; j < characters.size(); j++){ 
 						GameCharacter c = characters.get(j);
-						if(c.print().equalsIgnoreCase(playerChoice)){
+						if(c.toString().equalsIgnoreCase(playerChoice)){
 							players.add(new Player(c, i));
 							characters.remove(j);
 							selected = true;
@@ -482,11 +538,10 @@ public class Board {
 			if(w == null || r == null || c == null){
 				return false;
 			}
-			if(this.w.print().equalsIgnoreCase(w.print()) && this.r.print().equalsIgnoreCase(r.print()) && this.c.print().equalsIgnoreCase(c.print())){
+			if(this.w.toString().equalsIgnoreCase(w.toString()) && this.r.toString().equalsIgnoreCase(r.toString()) && this.c.toString().equalsIgnoreCase(c.toString())){
 				return true;
 			}
 			return false;
 		}
-
 	}
 }

@@ -33,8 +33,8 @@ public class Player {
 		hand = new ArrayList<GameObject>();
 		room = null;
 	}
-	public String getCharacter() {
-		return c.print();
+	public GameCharacter getCharacter() {
+		return c;
 	}
 	public boolean getTurn(int i){
 		return i == playerNumber;
@@ -67,8 +67,9 @@ public class Player {
 	}
 	public void printhand(){
 		for (int i = 0; i < hand.size(); i ++){
-			System.out.println(hand.get(i).print());
+			System.out.println(hand.get(i).toString());
 		}
 	}
 	
 }
+

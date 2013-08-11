@@ -7,5 +7,6 @@ package piece;
  *
  */
 public abstract class GameObject {
-	public abstract String print();
+	public abstract String toString();
+	public abstract boolean compare(String s);
 }

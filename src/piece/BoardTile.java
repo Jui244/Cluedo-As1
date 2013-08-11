@@ -17,7 +17,13 @@ public class BoardTile extends GameObject{
 	public Room getRoom(){
 		return room;
 	}
-	public String print(){
+	public String toString(){
 		return s;
+	}
+	@Override
+	public boolean compare(String s) {
+		if(this.s.equalsIgnoreCase(s))
+			return true;
+		return false;
 	}
 }
