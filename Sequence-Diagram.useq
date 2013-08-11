@@ -38,8 +38,33 @@
     binary="false" label="weapon" type="class" autoSize="true">    
     <position height="-1" width="-1" x="426" y="0"/>  
   </object>  
+  <object id="12" language="java" name="main.Main" project="Cluedo" file="/Cluedo/src/main/Main.java" binary="false" 
+    label="&lt;static&gt;" type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="13">      
+      <position height="126" width="0" x="0" y="78"/>    
+    </execution>  
+  </object>  
+  <object id="16" language="java" name="board.Board" project="Cluedo" file="/Cluedo/src/board/Board.java" binary="false" 
+    label="board1" type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="15">      
+      <position height="84" width="0" x="0" y="99"/>    
+    </execution>    
+    <execution id="18">      
+      <position height="21" width="0" x="0" y="141"/>    
+    </execution>  
+  </object>  
   <message id="3" operation="accusation(piece.Weapon,piece.Room,piece.GameCharacter):boolean">    
     <end type="SOURCE" refId="2"/>    
     <end type="TARGET" refId="4"/>  
+  </message>  
+  <message id="14" operation="Board()">    
+    <end type="SOURCE" refId="13"/>    
+    <end type="TARGET" refId="15"/>  
+  </message>  
+  <message id="17" operation="init():void">    
+    <end type="SOURCE" refId="15"/>    
+    <end type="TARGET" refId="18"/>  
   </message>
 </sequence-diagram>
