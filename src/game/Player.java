@@ -9,9 +9,10 @@ import piece.GameObject;
 import piece.Room;
 
 /**
- * A player on the board, nuff said.
- * Going to make a separate 'Character' class.
- * @author Potato
+ * The player, each player hold its piece on the board and the previous piece from there location, on movement they
+ * place the piece back down and move there character to the new position.
+ * each player also has a hand which is printed out on there turn.
+ * @author Scott
  *
  */
 public class Player {

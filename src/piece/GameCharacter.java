@@ -1,6 +1,11 @@
 package piece;
 
-
+/**
+ * Class for a game character, the x and y are the starting position for the character and the name
+ * is mainly used when making comparisons
+ * @author Scott
+ *
+ */
 public class GameCharacter extends GameObject{
 	private String name;
 	public final int x;

@@ -13,7 +13,11 @@ import piece.Weapon;
 import piece.GameCharacter;
 
 import game.Player;
-
+/**
+ * This is the class where 
+ * @author Scott Allen
+ *
+ */
 
 public class Board {
 
@@ -102,12 +106,13 @@ public class Board {
 		Room hall = new Room("Hall", null);
 		String[] ca = {"14,12", "9,17", "17,17"};
 		Room clue = new Room("Clue", ca);
-
+		//intalizes all the rooms and the doors that are inside said room.
+		
 		observatory.setPassage(kitchen);
 		kitchen.setPassage(observatory);
 		guestHouse.setPassage(spa);
 		spa.setPassage(guestHouse);
-
+		//connects the rooms that have passageways. 
 		rooms.add(kitchen);
 		rooms.add(diningRoom);
 		rooms.add(guestHouse);
@@ -168,7 +173,7 @@ public class Board {
 
 		BoardTile w = new BoardTile("W", null); 
 		BoardTile hw = new BoardTile(" ", null); 
-
+		//Creates the board
 		BoardTile[][] initBoard = {
 				{ w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w},
 				{ w,sr,sr,sr,sr, w,hw,hw, w,tr,tr,tr, w,hw, w,lr,lr,lr,lr, w,hw,hw, w,or, w},
@@ -203,6 +208,7 @@ public class Board {
 		};
 		this.board = initBoard;
 		count = 0;
+		//places each player in the correct position on the board.
 		for(Player pl:players){
 			int x = pl.getCharacter().x;
 			int y = pl.getCharacter().y;
