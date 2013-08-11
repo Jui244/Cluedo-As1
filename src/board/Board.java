@@ -214,7 +214,7 @@ public class Board {
 				{ w,hw,hw,hw,hw,hw,hw,hw,hw, w,dr,dr,dr,dr, w,hw,hw,hw,hw, g, w, w, w, w, w},
 				{ w, w, w, w, w,hw,hw,hw,hw, w,dr,dr,dr,dr, d,hw,hw,hw,hw, w,gr,gr,gr,gr, w},
 				{ w,kr,kr,kr,kr, k,hw,hw,hw, w,dr,dr,dr,dr, w,hw,hw,hw,hw, w,gr,gr,gr,gr, w},
-				{ w,kr,kr,kr,kr, w,hw,hw, w,dr,dr,dr,dr,dr,dr, w,hw,hw,hw, w,gr,gr,gr,gr, w},
+				{ w,kr,kr,kr,kr, w,hw,hw, w, w,dr,dr,dr,dr, w, w,hw,hw,hw, w,gr,gr,gr,gr, w},
 				{ w,kr,kr,kr,kr, w,hw,hw, w,dr,dr,dr,dr,dr,dr, w,hw,hw,hw, w,gr,gr,gr,gr, w},
 				{ w,kr,kr,kr,kr, w,hw,hw, w,dr,dr,dr,dr,dr,dr, w,hw,hw,hw, w,gr,gr,gr,gr, w},
 				{ w,kr,kr,kr,kr, w,hw,hw, w,dr,dr,dr,dr,dr,dr, w,hw,hw,hw, w,gr,gr,gr,gr, w},
@@ -261,7 +261,7 @@ public class Board {
 						ans = br.readLine();
 						read = ans.split(",");
 					}
-					if(makeAccu(read)){
+					if(makeAccusation(read)){
 						System.out.println("Player: " + players.get(i).playerNumber + " wins the game!");
 						return;
 					} else {
@@ -303,14 +303,13 @@ public class Board {
 						BoardTile canMove = temp.getPiece();
 
 						read = null;
-						
+						boolean sorry = false;
 						//need to rewrite this to handle movement in rooms
 						
 						while(read == null || read.length <= 1){
 							ans = br.readLine();
 							read = ans.split(",");
 						}
-						
 						while(rollCond!=roll){
 							for(int j = 0; j < read.length; j++){//need to check if the length is equal to the roll or if they enter a room, also if there is a wall in the path;
 								
@@ -343,24 +342,21 @@ public class Board {
 								if(canMove!=null && canMove.getRoom()!=null){
 									System.out.println("Is this reached");
 									rollCond=roll;
+									sorry = true;
 									break;
 								}
+								System.out.println(sorry);
 							}
 						}
 
-						
-						BoardTile tempP =  board[y+temp.y][x+temp.x];
-						board[y+temp.y][x + temp.x] = temp.getPiece();
-						board[temp.y][temp.x] = temp.getPrevPos();
-						temp.setPrevPos(x+temp.x, y+temp.y,tempP);
 						System.out.println((temp.y + x) + " " + (temp.x + y));
+						BoardTile t = switchPos(x+temp.x, y+temp.y,temp);
 
-
-						System.out.println(tempP.getRoom());
+						System.out.println(t.getRoom());
 
 						printBoard();
 
-						if(tempP.getRoom() != null){
+						if(t.getRoom() != null){
 							//move player and weapon to room
 							GameObject o = makeAttempt(ans, read, i);
 							if(o!=null){
@@ -370,13 +366,29 @@ public class Board {
 								return;
 							}	
 						}
-
 					}
 				}
 			}
 		}
 	}
 	
+	/*
+	 * return a player based on the character he's playing and a string.
+	 */
+	public BoardTile switchPos(int x, int y, Player p){
+		BoardTile temp =  board[y][x];
+		board[y][x] = p.getPiece();
+		board[p.y][p.x] = p.getPrevPos();
+		p.setPrevPos(x, y,temp);
+		return temp;
+	}
+	public Player getPlayer(String s){
+		for(Player p: players){
+			if(p.getCharacter().compare(s))
+				return p;
+		}
+		return null;
+	}
 	public GameObject makeAttempt(String ans, String[] read, int i) throws IOException{
 		System.out.println("Make a guess.");
 		System.out.println("Hint: Make sure to spell everything correctly, with commas between each item. Weapon,Character");
@@ -388,16 +400,16 @@ public class Board {
 			count = 0;
 		}
 		GameObject o = null;
-		for(int j = count; j < players.get(j).getHand().size();j++){
-			
+		
+		for(int j = count; j < players.size();j++){
 			if(found(players.get(j).getHand(), read)!=null){
 				o = found(players.get(j).getHand(), read);
 				break;
 			}
-			/*
 			if(j == players.size()-1)
-				j = 0;//the only way out of this loop should be buy winning or showing a card and breaking.
-			 */
+				j = 0;
+			if(j == count -1)
+				break;
 		}
 		return o;
 	}
@@ -413,7 +425,7 @@ public class Board {
 		return null;
 	}
 
-	public boolean makeAccu(String[] s){
+	public boolean makeAccusation(String[] s){
 		
 		//will throw an exception if the user enters in the incorrect order
 		Weapon w = null;
@@ -541,7 +553,7 @@ public class Board {
 			if(w == null || r == null || c == null){
 				return false;
 			}
-			if(this.w.toString().equalsIgnoreCase(w.toString()) && this.r.toString().equalsIgnoreCase(r.toString()) && this.c.toString().equalsIgnoreCase(c.toString())){
+			if(this.w.compare(w.toString()) && this.r.compare(r.toString()) && this.c.compare(c.toString())){
 				return true;
 			}
 			return false;
