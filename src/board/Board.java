@@ -149,7 +149,7 @@ public class Board {
 			players.get(count).addToHand(deck.get(i));
 			count++;
 		}
-
+		
 		crime = new Crime(murderWeapon, murderRoom, murderer);
 
 		BoardTile k = new BoardTile("K", kitchen); //Kitchen
@@ -216,24 +216,28 @@ public class Board {
 		/*
 		 * If I can be bothered later, I'll start fixing the exceptions this will throw if the user enters bad input.. not sure how important that is for this assignment.
 		 */
+
 		while(!killerFound){
 			for(int i = 0; i < players.size();i++){
+				BufferedReader buff = new BufferedReader(new InputStreamReader(System.in));
+
 				Player temp = players.get(i);
 				String[] read = null;
 				temp.printhand();
 				System.out.println("Would you like to make your final accusation? y/n");
-				BufferedReader buff = new BufferedReader(new InputStreamReader(System.in));
 				String ans = buff.readLine();
 				if(ans.equalsIgnoreCase("y")){
 					while(read == null || read.length!=3){
 						System.out.println("Please enter your accusation. Weapon,Room,Character");
+						System.out.println(murderWeapon.print() + "," + murderRoom.print() + "," + murderer.print());
 						ans = buff.readLine();
 						read = ans.split(",");
 					}
-					boolean bas = true;//Should change this later
-					if(bas){
+					if(makeAccu(read)){
 						System.out.println("Player: " + players.get(i).playerNumber + " wins the game!");
+						return;
 					} else {
+						i--;
 						players.remove(i);
 						if(players.size() == 1){
 							System.out.println("Player: " + players.get(0).playerNumber + " wins the game!");
@@ -241,6 +245,7 @@ public class Board {
 						}
 					}
 					//check if the accusations is true, otherwise remove the player from the game
+			
 				}
 				else{
 					if(temp.getRoom()!=null && temp.getRoom().getPassage()!=null){
@@ -267,6 +272,7 @@ public class Board {
 						}
 						while(rollCond!=roll){
 							for(int j = 0; j < read.length; j++){//need to check if the length is equal to the roll or if they enter a room, also if there is a wall in the path;
+								canMove = true;
 								if(canMove == false){
 									read = null;
 									while(read == null || read.length <= 1){
@@ -291,7 +297,7 @@ public class Board {
 								}
 							}
 						}
-						
+
 						BoardTile tempP =  board[y+temp.y][x+temp.x];
 						board[y+temp.y][x + temp.x] = temp.getPiece();
 						board[temp.y][temp.x] = temp.getPrevPos();
@@ -300,11 +306,13 @@ public class Board {
 
 						//also need to check that rollCond is not less than roll
 						//move the player to the new position, might make a special case for when in a room.
+						//need to move this elsewhere
 						System.out.println(tempP.getRoom());
 						if(tempP.getRoom() != null){
 							System.out.println("Make a guess.");
-							System.out.println("Hint: Make sure to spell everything correctly, with commas between each item");
+							System.out.println("Hint: Make sure to spell everything correctly, with commas between each item. Weapon,Character");
 							ans = buff.readLine();
+							read = ans.split(",");
 							count = i + 1;
 
 							if(count == players.size()){
@@ -312,15 +320,24 @@ public class Board {
 							}
 
 							for(int j = count; j < players.get(j).getHand().size();j++){
+								/*
 								if(temp.equals(players.get(j))){
 									System.out.println("Player: " + players.get(i).playerNumber + " wins the game!");
 									i = players.size();
 									killerFound = true;
 									return;
 								}
+								*/
+								if(found(players.get(i).getHand(), read)!=null){
+									System.out.println("Dispproved: " + found(players.get(i).getHand(), read).print());
+									break;
+								}
+								/*
 								if(j == players.size()-1)
 									j = 0;//the only way out of this loop should be buy winning or showing a card and breaking.
 								//iterate though all the players seeing if the can disprove
+								 * 
+								 */
 							}
 
 						}
@@ -330,9 +347,37 @@ public class Board {
 			}
 		}
 	}
+	public GameObject found(ArrayList<GameObject>a, String[] sa){
+		for (GameObject o : a){
+			for(int i = 0; i < sa.length;i++){
+			if(o.print().equalsIgnoreCase(sa[i]))
+				return o;
+			}
+		}
+		return null;
+	}
 	/*
 	 * returns true if there are no walls between the two positions and the the move is within the bounds of the board.
 	 */
+	public boolean makeAccu(String[] s){
+		Weapon we = null;
+		for(Weapon w: weapons){
+			if(w.print().equalsIgnoreCase(s[0]))
+				we = w;
+		}
+		Room re = null;
+		for(Room r: rooms){
+			if(r.print().equalsIgnoreCase(s[1]))
+				re = r;
+		}
+		GameCharacter ce = null;
+		for(GameCharacter c: characters)
+			if(c.print().equalsIgnoreCase(s[2]))
+				ce = c;
+		return crime.accusation(we, re, ce);
+		
+	}
+	
 	public boolean canMove(Player p, int x, int y, String s){
 		int tempS = 0;
 		int tempE = 0;
@@ -349,6 +394,7 @@ public class Board {
 				System.out.println(p.x + " " + i);
 				if(board[i][p.x] == null || board[i][p.x+x].print().equalsIgnoreCase("W"))
 					return false;
+
 			}
 		} else {
 			if(x < 0){
@@ -363,6 +409,7 @@ public class Board {
 				System.out.println(i + " " + p.y);
 				if(board[p.y][i] == null || board[p.y+y][i].print().equalsIgnoreCase("W"))
 					return false;
+
 			}
 		}
 		return true;
@@ -431,9 +478,11 @@ public class Board {
 			this.r = r;
 			this.c = c;
 		}
-		@SuppressWarnings("unused")
 		public boolean accusation(Weapon w, Room r, GameCharacter c){
-			if(this.w.equals(w) && this.r.equals(r) && this.c.equals(c)){
+			if(w == null || r == null || c == null){
+				return false;
+			}
+			if(this.w.print().equalsIgnoreCase(w.print()) && this.r.print().equalsIgnoreCase(r.print()) && this.c.print().equalsIgnoreCase(c.print())){
 				return true;
 			}
 			return false;
