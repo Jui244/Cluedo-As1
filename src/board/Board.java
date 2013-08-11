@@ -248,8 +248,7 @@ public class Board {
 				}
 				else{
 					ans = null;
-
-					if(temp.getPrevPos() !=null && temp.getPrevPos().getRoom()!=null && temp.getPrevPos().getRoom().getPassage()!=null){
+					if(temp.getPrevPos().getRoom()!=null && temp.getPrevPos().getRoom().getPassage()!=null){
 						System.out.println("Would you like to move to: " + temp.getPrevPos().getRoom().getPassage().toString() + ". y/n");
 						ans = br.readLine();
 						if(ans.equalsIgnoreCase("y")){
@@ -264,13 +263,14 @@ public class Board {
 								System.out.println("Player: " + temp.playerNumber + " wins!");
 								return;
 							}
-						}if(ans.equalsIgnoreCase("n")){
+						}
+					}
+					else if(temp.getPrevPos().getRoom()!=null || ans != null && ans.equalsIgnoreCase("n")){
 							String[] td = temp.getPrevPos().getRoom().doors;
 							System.out.println("Which door would you like to exit from?");
 							temp.getPrevPos().getRoom().printDoors();
 
 							String door = br.readLine();
-
 
 							for(int j = 0; j < td.length; j++){
 								if(door.equalsIgnoreCase(td[j])){
@@ -281,8 +281,8 @@ public class Board {
 							String[] newPos = door.split(",");
 							switchPos(Integer.parseInt(newPos[0]), Integer.parseInt(newPos[1]), temp);
 							ans = null;
-						}
-					}else if(ans == null){
+					}
+					if(ans == null){
 						int roll = 1 + (int)(Math.random() * ((6 - 1) + 1));
 						System.out.println("You rolled a " + roll + "!");
 						System.out.println("What co-or would you like to move to?");
@@ -339,6 +339,8 @@ public class Board {
 						BoardTile t = switchPos(x+temp.x, y+temp.y,temp);
 						System.out.println(t.getRoom());
 						printBoard();
+						if (ans!= null && temp.getPrevPos().getRoom()!=null)
+						ans += "," + temp.getPrevPos().getRoom().toString();
 						if(t.getRoom() != null){
 							//move player and weapon to room
 							GameObject o = makeAttempt(ans, read, i);
@@ -375,7 +377,7 @@ public class Board {
 	public GameObject makeAttempt(String ans, String[] read, int i) throws IOException{
 		System.out.println("Make a guess.");
 		System.out.println("Hint: Make sure to spell everything correctly, with commas between each item. Weapon,Character");
-		ans = br.readLine();
+		ans = br.readLine() + "," + players.get(i).getPrevPos().getRoom().toString();
 		read = ans.split(",");
 		int count = i + 1;
 		if(count == players.size()){
@@ -392,10 +394,11 @@ public class Board {
 		if(getPlayer(read[1])!=null){
 			String[] temp = rt.doors[0].split(",");
 			switchPos(Integer.parseInt(temp[0]), Integer.parseInt(temp[1]), getPlayer(read[1]));
-		}
-		for (Weapon w: weapons){
-			if(w.compare(read[0])){
-				w.r = rt;
+
+			for (Weapon w: weapons){
+				if(w.compare(read[0])){
+					w.r = rt;
+				}
 			}
 		}
 		//checks to see if the other players can disprove the player
@@ -403,13 +406,15 @@ public class Board {
 			if(found(players.get(j).getHand(), read)!=null){
 				o = found(players.get(j).getHand(), read);
 				break;
-			}/*
-			if(j == count-1)
-				break;
-			if(j == players.size()-1)
-				j = 0;
+			}
+			/*
+				if(j == count-1)
+					break;
+				if(j == players.size()-1)
+					j = 0;
 			 */
 		}
+
 		return o;
 	}
 
@@ -421,7 +426,7 @@ public class Board {
 					return o;
 			}
 		}
-		return new Weapon("ficking something");
+		return null;
 	}
 
 	public boolean makeAccusation(String[] s){
