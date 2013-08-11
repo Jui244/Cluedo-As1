@@ -321,6 +321,9 @@ public class Board {
 										ans = br.readLine();
 										read = ans.split(",");
 									}
+									rollCond = 0;
+									x = 0;
+									y = 0;
 									j = 0;
 								}
 								
