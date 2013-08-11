@@ -1,39 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <sequence-diagram version="1.1.3" icons="true" automaticImage="PNG">  
-  <object id="1" language="java" name="main.Main" project="Cluedo" file="/Cluedo/src/main/Main.java" binary="false" 
-    label="main" type="class" autoSize="true">    
-    <position height="-1" width="-1" x="274" y="0"/>  
-  </object>  
-  <object id="2" language="java" name="board.Board" project="Cluedo" file="/Cluedo/src/board/Board.java" binary="false" 
+  <object id="1" language="java" name="board.Board" project="Cluedo" file="/Cluedo/src/board/Board.java" binary="false" 
     label="board" type="class" autoSize="true">    
-    <position height="-1" width="-1" x="90" y="0"/>  
+    <position height="-1" width="-1" x="90" y="0"/>    
+    <execution id="2">      
+      <position height="63" width="64" x="5" y="114"/>    
+    </execution>  
   </object>  
-  <object id="3" language="java" name="board.Board.Crime" project="Cluedo" file="/Cluedo/src/board/Board.java" 
+  <object id="5" language="java" name="board.Board.Crime" project="Cluedo" file="/Cluedo/src/board/Board.java" 
     binary="false" label="crime" type="class" autoSize="true">    
-    <position height="-1" width="-1" x="90" y="0"/>  
+    <position height="-1" width="-1" x="90" y="0"/>    
+    <execution id="4">      
+      <position height="21" width="62" x="73" y="135"/>    
+    </execution>  
   </object>  
-  <object id="4" language="java" name="game.Player" project="Cluedo" file="/Cluedo/src/game/Player.java" binary="false" 
+  <object id="6" language="java" name="game.Player" project="Cluedo" file="/Cluedo/src/game/Player.java" binary="false" 
     label="player" type="class" autoSize="true">    
     <position height="-1" width="-1" x="241" y="0"/>  
   </object>  
-  <object id="5" language="java" name="piece.BoardTile" project="Cluedo" file="/Cluedo/src/piece/BoardTile.java" 
+  <object id="7" language="java" name="piece.BoardTile" project="Cluedo" file="/Cluedo/src/piece/BoardTile.java" 
     binary="false" label="boardTile" type="class" autoSize="true">    
     <position height="-1" width="-1" x="426" y="0"/>  
   </object>  
-  <object id="6" language="java" name="piece.GameCharacter" project="Cluedo" file="/Cluedo/src/piece/GameCharacter.java" 
+  <object id="8" language="java" name="piece.GameCharacter" project="Cluedo" file="/Cluedo/src/piece/GameCharacter.java" 
     binary="false" label="gameCharacter" type="class" autoSize="true">    
     <position height="-1" width="-1" x="426" y="0"/>  
   </object>  
-  <object id="7" language="java" name="piece.GameObject" project="Cluedo" file="/Cluedo/src/piece/GameObject.java" 
+  <object id="9" language="java" name="piece.GameObject" project="Cluedo" file="/Cluedo/src/piece/GameObject.java" 
     binary="false" label="gameObject" type="class" autoSize="true">    
     <position height="-1" width="-1" x="426" y="0"/>  
   </object>  
-  <object id="8" language="java" name="piece.Room" project="Cluedo" file="/Cluedo/src/piece/Room.java" binary="false" 
+  <object id="10" language="java" name="piece.Room" project="Cluedo" file="/Cluedo/src/piece/Room.java" binary="false" 
     label="room" type="class" autoSize="true">    
     <position height="-1" width="-1" x="426" y="0"/>  
   </object>  
-  <object id="9" language="java" name="piece.Weapon" project="Cluedo" file="/Cluedo/src/piece/Weapon.java" 
+  <object id="11" language="java" name="piece.Weapon" project="Cluedo" file="/Cluedo/src/piece/Weapon.java" 
     binary="false" label="weapon" type="class" autoSize="true">    
     <position height="-1" width="-1" x="426" y="0"/>  
-  </object>
+  </object>  
+  <message id="3" operation="accusation(piece.Weapon,piece.Room,piece.GameCharacter):boolean">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="4"/>  
+  </message>
 </sequence-diagram>
