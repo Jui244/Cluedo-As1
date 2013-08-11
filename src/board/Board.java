@@ -300,7 +300,26 @@ public class Board {
 							}else{
 								System.out.println("Player: " + temp.playerNumber + " wins!");
 								return;
-							}	
+							}
+						if(ans.equalsIgnoreCase("n")){
+							String[] td = temp.getPrevPos().getRoom().doors;
+							System.out.println("Which door would you like to exit from?");
+							temp.getPrevPos().getRoom().printDoors();
+							
+							String door = br.readLine();
+							
+							
+							for(int j = 0; j < td.length; j++){
+								if(door.equalsIgnoreCase(td[j])){
+									door = td[j];
+									break;
+								}	
+							}
+							
+							newPos = door.split(",");
+							switchPos(Integer.parseInt(newPos[0]), Integer.parseInt(newPos[1]), temp);
+							
+						}
 						}
 					}else if(ans == null || ans.equalsIgnoreCase("n")){
 						int roll = 1 + (int)(Math.random() * ((6 - 1) + 1));
