@@ -248,7 +248,7 @@ public class Board {
 				}
 				else{
 					ans = null;
-					if(temp.getPrevPos().getRoom()!=null)
+					if(temp.getPrevPos().getRoom()!=null)//if the player is now inside a room, allow them to make an accusation
 					System.out.println(temp.getPrevPos().getRoom().toString());
 					if(temp.getPrevPos().getRoom()!=null && temp.getPrevPos().getRoom().getPassage()!=null){
 						System.out.println("Would you like to move to: " + temp.getPrevPos().getRoom().getPassage().toString() + ". y/n");
@@ -268,7 +268,7 @@ public class Board {
 						}
 					}
 					else if(temp.getPrevPos().getRoom()!=null || ans != null && ans.equalsIgnoreCase("n")){
-							String[] td = temp.getPrevPos().getRoom().doors;
+							String[] td = temp.getPrevPos().getRoom().doors;//case for if there are multiple doors.
 							System.out.println("Which door would you like to exit from?");
 							temp.getPrevPos().getRoom().printDoors();
 
@@ -303,7 +303,7 @@ public class Board {
 							ans = br.readLine();
 							read = ans.split(",");
 						}
-						while(rollCond!=roll && canMove != null){
+						while(rollCond!=roll && canMove != null){//how movement is handled, should re ask for input if the player trys to walk into a wall.
 							for(int j = 0; j < read.length; j++){//need to check if the length is equal to the roll or if they enter a room, also if there is a wall in the path;
 								if(canMove == null){
 									read = null;
@@ -368,6 +368,7 @@ public class Board {
 		p.setPrevPos(x, y,temp);
 		return temp;
 	}
+	//returns a player based on a string entered
 	public Player getPlayer(String s){
 		for(Player p: players){
 			if(p.getCharacter().compare(s))
@@ -375,6 +376,7 @@ public class Board {
 		}
 		return null;
 	}
+	//used for when a player makes a guess as to who did it, should move the player and weapon into that room.
 	public GameObject makeAttempt(String ans, String[] read, int i) throws IOException{
 		System.out.println("Make a guess.");
 		System.out.println("Hint: Make sure to spell everything correctly, with commas between each item. Weapon,Character");
@@ -418,7 +420,7 @@ public class Board {
 
 		return o;
 	}
-
+	//returns the game object in a players hand if it matches a string.
 	public GameObject found(ArrayList<GameObject>a, String[] sa){
 		//iterates through a players hand returning an object if it's found.
 		for (GameObject o : a){
@@ -449,7 +451,14 @@ public class Board {
 	}
 
 	//bug here
-
+	/**
+	 * checks if the player can move in an X or Y direction, should return null if it cannot.
+	 * @param p
+	 * @param x
+	 * @param y
+	 * @param s
+	 * @return
+	 */
 	public BoardTile canMove(Player p, int x, int y, String s){
 		int tempS = 0;
 		int tempE = 0;
@@ -501,7 +510,9 @@ public class Board {
 		System.out.println("    0 1 2 3 4 5 6 7 8 9 1 1 1 1 1 1 1 1 1 1 2 2 2 2 2");
 		System.out.println("                        0 1 2 3 4 5 6 7 8 9 0 1 2 3 4");
 	}
-
+	/*
+	 * Gets input for the number of players and which character they wish to play.
+	 */
 	public void init(){
 		System.out.println("Welcome to Cluedo!");
 		System.out.println("Please enter the number of players, it must be between 2 and 4.");
@@ -533,7 +544,7 @@ public class Board {
 			System.out.println(player);
 		} catch (Exception e) {}
 	}
-
+	//Inner class, used when making the final accusation.
 	private class Crime{
 		public final Weapon w;
 		public final Room r;
