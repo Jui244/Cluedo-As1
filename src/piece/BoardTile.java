@@ -9,10 +9,12 @@ package piece;
 public class BoardTile extends GameObject{
 	private Room room;
 	private String s;
+	public final int cost;
 	
-	public BoardTile(String s, Room r){
+	public BoardTile(String s, Room r, int cost){
 		this.s = s;
 		this.room = r;
+		this.cost = cost;
 	}
 	public Room getRoom(){
 		return room;

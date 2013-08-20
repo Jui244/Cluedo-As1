@@ -6,6 +6,9 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 import piece.BoardTile;
 import piece.GameObject;
 import piece.Room;
@@ -22,7 +25,8 @@ import game.Player;
  */
 
 public class Board {
-
+	private JFrame frame;
+	private JFrame init;
 	private ArrayList<Player> players;
 	private ArrayList<Room> rooms;
 	private ArrayList<Weapon> weapons;
@@ -34,7 +38,15 @@ public class Board {
 	private BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
 	public Board() throws IOException{
+		init = new JFrame();
+		JOptionPane.showConfirmDialog(
+			    frame,
+			    "We should set up a game using one of these :D",
+			    "Is that ok?",
+			    JOptionPane.YES_NO_OPTION);
+		
 
+		
 		rooms = new ArrayList<Room>(9);
 		weapons = new ArrayList<Weapon>(9);
 		characters = new ArrayList<GameCharacter>(6);
@@ -151,30 +163,30 @@ public class Board {
 		deck.add(characters.get(0));
 		deck.add(rooms.get(0));
 
-		BoardTile k = new BoardTile("K", kitchen);
-		BoardTile kr = new BoardTile(" ", kitchen);
-		BoardTile d = new BoardTile("D", diningRoom);
-		BoardTile dr = new BoardTile(" ", diningRoom);
-		BoardTile g = new BoardTile("G", guestHouse);
-		BoardTile gr = new BoardTile(" ", guestHouse);
-		BoardTile p = new BoardTile("P", patio);
-		BoardTile pr = new BoardTile(" ", patio);
-		BoardTile s = new BoardTile("S", spa);
-		BoardTile sr = new BoardTile(" ", spa);
-		BoardTile t = new BoardTile("T", theater);
-		BoardTile tr = new BoardTile(" ", theater);
-		BoardTile l = new BoardTile("L", livingRoom);
-		BoardTile lr = new BoardTile(" ", livingRoom);
-		BoardTile o = new BoardTile("O", observatory);
-		BoardTile or = new BoardTile(" ", observatory);
-		BoardTile c = new BoardTile("C", clue);
-		BoardTile cr = new BoardTile(" ", clue);
+		BoardTile k = new BoardTile("K", kitchen,0);
+		BoardTile kr = new BoardTile(" ", kitchen,0);
+		BoardTile d = new BoardTile("D", diningRoom,0);
+		BoardTile dr = new BoardTile(" ", diningRoom,0);
+		BoardTile g = new BoardTile("G", guestHouse,0);
+		BoardTile gr = new BoardTile(" ", guestHouse,0);
+		BoardTile p = new BoardTile("P", patio,0);
+		BoardTile pr = new BoardTile(" ", patio,0);
+		BoardTile s = new BoardTile("S", spa,0);
+		BoardTile sr = new BoardTile(" ", spa,0);
+		BoardTile t = new BoardTile("T", theater,0);
+		BoardTile tr = new BoardTile(" ", theater,0);
+		BoardTile l = new BoardTile("L", livingRoom,0);
+		BoardTile lr = new BoardTile(" ", livingRoom,0);
+		BoardTile o = new BoardTile("O", observatory,0);
+		BoardTile or = new BoardTile(" ", observatory,0);
+		BoardTile c = new BoardTile("C", clue,0);
+		BoardTile cr = new BoardTile(" ", clue,0);
 
-		BoardTile h = new BoardTile("H", hall);
-		BoardTile hr = new BoardTile(" ", hall);
+		BoardTile h = new BoardTile("H", hall,0);
+		BoardTile hr = new BoardTile(" ", hall,0);
 
-		BoardTile w = new BoardTile("W", null); 
-		BoardTile hw = new BoardTile(" ", null); 
+		BoardTile w = new BoardTile("W", null,10000); 
+		BoardTile hw = new BoardTile(" ", null,1); 
 		//Creates the board
 		BoardTile[][] initBoard = {
 				{ w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w},
@@ -217,7 +229,7 @@ public class Board {
 			pl.setPrevPos(x, y, board[y][x]);
 			board[y][x] = pl.getPiece();
 		}
-
+		frame = new BoardFrame(board);
 		printBoard();
 		gameLoop();
 	}
@@ -468,6 +480,7 @@ public class Board {
 	 * @return
 	 */
 	public BoardTile canMove(Player p, int x, int y, String s){
+		// note just add costs so if we can change this method to only move if the cost is = to the player roll or the player is in a room, cost of navigting a room is zero.
 		int tempS = 0;
 		int tempE = 0;
 		if(s.equals("y")){
@@ -499,7 +512,7 @@ public class Board {
 			for(int i = tempS; i < tempE; i++){
 				if(board[p.y+y][i].getRoom()!=null)
 					return board[p.y+y][i];
-				if(board[i][p.x+x].toString().equalsIgnoreCase("W"))
+				if(board[p.y+y][i].toString().equalsIgnoreCase("W"))
 					return null;
 			}
 			return(board[p.y+y][Math.max(tempE, tempS)]);
@@ -523,7 +536,7 @@ public class Board {
 	 */
 	public void init(){
 		System.out.println("Welcome to Cluedo!");
-		System.out.println("Please enter the number of players, it must be between 2 and 4.");
+		System.out.println("Please enter the number of players, it must be between 2 and 6.");
 		int player = 0;
 		boolean selected;
 		try {

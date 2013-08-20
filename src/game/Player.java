@@ -30,7 +30,7 @@ public class Player {
 	public Player(GameCharacter c, int playerNumber) {
 		this.c = c;
 		this.playerNumber = playerNumber;
-		piece = new BoardTile(String.valueOf(playerNumber), null);
+		piece = new BoardTile(String.valueOf(playerNumber), null, 100000);
 		hand = new ArrayList<GameObject>();
 		room = null;
 	}
